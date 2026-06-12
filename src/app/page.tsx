@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useLang } from '@/lib/i18n';
-import { PatternText } from '@/components/ui/pattern-text';
 import { getResumeVideoUrls } from '@/lib/supabase';
 
 export default function AboutPage() {
@@ -14,49 +13,44 @@ export default function AboutPage() {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10">
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: '40px 32px 60px' }}>
 
-      {/* ── Heading ─────────────────────────────────── */}
-      <div className="mb-1">
-        <PatternText
-          text={t('about_title')}
-          className="font-semibold italic leading-none"
-          style={{
-            fontFamily: 'Cormorant Garamond, Georgia, serif',
-            fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
-          }}
-        />
-      </div>
-      <p className="text-sm text-white/30 font-light mb-8 mt-2">{t('about_sub')}</p>
+      {/* Heading */}
+      <h1 style={{
+        fontFamily: 'Cormorant Garamond, Georgia, serif',
+        fontSize: 'clamp(3rem, 6vw, 5rem)',
+        fontWeight: 600,
+        fontStyle: 'italic',
+        lineHeight: 1,
+        color: '#fff',
+        marginBottom: 8,
+      }}>
+        {t('about_title')}
+      </h1>
+      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', marginBottom: 36, fontWeight: 300 }}>
+        {t('about_sub')}
+      </p>
 
-      {/* ── Resume video player ──────────────────────── */}
+      {/* Video player */}
       {videos.length > 0 && (
-        <div className="mb-8">
+        <div style={{ marginBottom: 36 }}>
           <video
             key={videos[activeVideo]}
             src={videos[activeVideo]}
             controls
             playsInline
-            className="w-full aspect-video rounded-2xl bg-black border border-white/[0.07] object-cover"
+            style={{ width: '100%', aspectRatio: '16/9', borderRadius: 16, background: '#000', border: '1px solid rgba(255,255,255,0.07)', display: 'block' }}
           />
-
-          {/* Thumbnail strip */}
           {videos.length > 1 && (
-            <div className="flex gap-2 mt-2 overflow-x-auto pb-1">
+            <div style={{ display: 'flex', gap: 8, marginTop: 8, overflowX: 'auto', paddingBottom: 4 }}>
               {videos.map((url, i) => (
-                <button
-                  key={url + i}
-                  onClick={() => setActiveVideo(i)}
-                  className={`relative flex-shrink-0 w-20 aspect-video rounded-lg overflow-hidden border transition-all ${
-                    i === activeVideo
-                      ? 'border-white/60 opacity-100'
-                      : 'border-white/10 opacity-40 hover:opacity-70'
-                  }`}
-                >
-                  <video src={url} muted playsInline preload="metadata" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <span className="text-white text-[10px]">▶</span>
-                  </div>
+                <button key={url + i} onClick={() => setActiveVideo(i)} style={{
+                  flexShrink: 0, width: 80, aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden',
+                  border: `1px solid ${i === activeVideo ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)'}`,
+                  opacity: i === activeVideo ? 1 : 0.45, cursor: 'pointer', padding: 0, background: 'none',
+                  position: 'relative',
+                }}>
+                  <video src={url} muted playsInline preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </button>
               ))}
             </div>
@@ -64,40 +58,28 @@ export default function AboutPage() {
         </div>
       )}
 
-      {/* ── Bio + Tools ──────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Bio */}
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-          <p className="text-white/60 text-sm leading-relaxed font-light">
+      {/* Bio + Tools */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, padding: 24 }}>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.7, fontWeight: 300 }}>
             Content creator at the intersection of{' '}
-            <strong className="text-white/80">AI, visual art, and mindful living</strong>.
-            I create videos, AI artworks, and music that tell stories without unnecessary words.
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>AI, visual art, and mindful living</strong>.
           </p>
-          <p className="text-white/40 text-sm leading-relaxed font-light mt-3">
-            Working with:{' '}
-            <strong className="text-white/60">ChatGPT, Midjourney, Claude, Suno, Google AI</strong>
+          <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 13, lineHeight: 1.7, fontWeight: 300, marginTop: 12 }}>
+            Working with: <strong style={{ color: 'rgba(255,255,255,0.55)' }}>ChatGPT, Midjourney, Claude, Suno, Google AI</strong>
           </p>
-          <div className="flex flex-wrap gap-1.5 mt-5">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 20 }}>
             {['AI Content', 'Video', 'AI Art', 'Music AI', 'Adaptogens'].map(tag => (
-              <span
-                key={tag}
-                className="px-2.5 py-1 bg-white/[0.05] border border-white/[0.07] rounded-full text-[11px] text-white/35"
-              >
-                {tag}
-              </span>
+              <span key={tag} style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 100, fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>{tag}</span>
             ))}
           </div>
         </div>
 
-        {/* Tools */}
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
-          <h2
-            style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
-            className="text-xl font-semibold italic text-white/60 mb-4"
-          >
+        <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 20, padding: 24 }}>
+          <h2 style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 20, fontWeight: 600, fontStyle: 'italic', color: 'rgba(255,255,255,0.6)', marginBottom: 16 }}>
             Skills & Tools
           </h2>
-          <div className="grid grid-cols-4 gap-2">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
             {[
               { name: 'Midjourney', icon: '⛵' },
               { name: 'ChatGPT', icon: '✦' },
@@ -108,11 +90,11 @@ export default function AboutPage() {
               { name: 'CapCut', icon: '▶' },
               { name: 'Illustrator', icon: 'Ai' },
             ].map(tool => (
-              <div key={tool.name} className="flex flex-col items-center gap-1">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.06] flex items-center justify-center text-sm text-white/55">
+              <div key={tool.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>
                   {tool.icon}
                 </div>
-                <span className="text-[9px] text-white/25 text-center leading-tight">{tool.name}</span>
+                <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.25)', textAlign: 'center' }}>{tool.name}</span>
               </div>
             ))}
           </div>
