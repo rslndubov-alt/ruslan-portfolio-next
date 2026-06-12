@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { I18nProvider } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
-import BgOrnament from '@/components/BgOrnament';
+import BeamsBackground from '@/components/BeamsBackground';
 import AiChatWidget from '@/components/AiChatWidget';
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body>
         <I18nProvider>
-          <BgOrnament />
+          <BeamsBackground />
           <Navbar />
           <main>{children}</main>
           <footer className="text-center py-5 text-white/15 text-xs border-t border-white/[0.04] mt-10">
