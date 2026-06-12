@@ -20,8 +20,8 @@ export default function ArtsPage() {
       <div className="mb-2">
         <PatternText
           text={t('arts_title')}
-          className="font-semibold italic leading-none" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
-          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
+          className="font-semibold italic leading-none"
+          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
         />
       </div>
       <p className="text-sm text-white/30 font-light mb-6">{t('arts_sub')}</p>
