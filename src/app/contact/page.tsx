@@ -33,13 +33,18 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-8 py-9">
-      <div className="mb-2">
-        <PatternText
-          text={t('contact_title')}
-          className="font-semibold italic leading-none"
-          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
-        />
-      </div>
+      {/* Heading */}
+      <h1 style={{
+        fontFamily: 'Cormorant Garamond, Georgia, serif',
+        fontSize: 'clamp(3rem, 6vw, 5rem)',
+        fontWeight: 600,
+        fontStyle: 'italic',
+        lineHeight: 1,
+        color: '#fff',
+        marginBottom: 8,
+      }}>
+        {t('contact_title')}
+      </h1>
       <p className="text-sm text-white/30 font-light mb-8">{t('contact_sub')}</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
