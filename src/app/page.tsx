@@ -20,8 +20,11 @@ export default function AboutPage() {
       <div className="mb-1">
         <PatternText
           text={t('about_title')}
-          className="text-5xl md:text-7xl font-semibold italic leading-none"
-          style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
+          className="font-semibold italic leading-none"
+          style={{
+            fontFamily: 'Cormorant Garamond, Georgia, serif',
+            fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+          }}
         />
       </div>
       <p className="text-sm text-white/30 font-light mb-8 mt-2">{t('about_sub')}</p>

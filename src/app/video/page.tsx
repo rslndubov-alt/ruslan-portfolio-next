@@ -19,7 +19,7 @@ export default function VideoPage() {
       <div className="mb-2">
         <PatternText
           text={t('video_title')}
-          className="!text-[3.5rem] md:!text-[5rem] !font-semibold italic leading-none"
+          className="font-semibold italic leading-none" style={{ fontFamily: 'Cormorant Garamond, Georgia, serif', fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
           style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
         />
       </div>
@@ -71,3 +71,4 @@ function VideoCard({ url, index, onPlay }: { url: string; index: number; onPlay:
     </div>
   );
 }
+
