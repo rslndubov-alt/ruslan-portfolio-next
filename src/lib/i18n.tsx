@@ -18,6 +18,8 @@ export const translations = {
     agent_title: 'AI Assistant',
     footer: '© 2026 · Ruslan Dubov · AI. Art. Adaptogens.',
     badge_featured: 'Featured',
+    bio1: 'My name is <strong>Ruslan Dubov</strong> &mdash; a content creator at the intersection of <strong>AI, visual art, and mindful living</strong>. I create videos, AI artworks, and music that tell stories without unnecessary words.',
+    bio2: 'I work with: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong> &mdash; turning ideas into a finished product faster than ever.',
   },
   uk: {
     nav_about: 'Про мене', nav_arts: 'Арти', nav_video: 'Відео', nav_contact: 'Контакти',
@@ -33,6 +35,8 @@ export const translations = {
     agent_title: 'AI Асистент',
     footer: '© 2026 · Руслан Дубов · AI. Мистецтво. Адаптогени.',
     badge_featured: 'Головне',
+    bio1: 'Мене звати <strong>Руслан Дубов</strong> &mdash; контент-крієйтор на перетині <strong>AI, візуального мистецтва та усвідомленого способу життя</strong>. Створюю відео, AI-арти та музику.',
+    bio2: 'Працюю з: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong> &mdash; перетворюю ідеї на готовий продукт.',
   },
   ru: {
     nav_about: 'Обо мне', nav_arts: 'Арты', nav_video: 'Видео', nav_contact: 'Контакты',
@@ -48,6 +52,8 @@ export const translations = {
     agent_title: 'AI Ассистент',
     footer: '© 2026 · Руслан Дубов · AI. Искусство. Адаптогены.',
     badge_featured: 'Главное',
+    bio1: 'Меня зовут <strong>Руслан Дубов</strong> &mdash; контент-криейтор на пересечении <strong>AI, визуального искусства и осознанного образа жизни</strong>. Создаю видео, AI-арты и музыку.',
+    bio2: 'Работаю с: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong> &mdash; превращая идеи в готовый продукт.',
   },
 };
 

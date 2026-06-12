@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useLang } from '@/lib/i18n';
-import { PatternText } from '@/components/ui/pattern-text';
+import Image from 'next/image';
 
 const socials = [
   { platform: 'YouTube', handle: '@ruslandubov5532', href: 'https://www.youtube.com/@ruslandubov5532', icon: '▶' },
@@ -32,70 +32,93 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-8 py-9">
-      {/* Heading */}
-      <h1 style={{
-        fontFamily: 'Cormorant Garamond, Georgia, serif',
-        fontSize: 'clamp(3rem, 6vw, 5rem)',
-        fontWeight: 600,
-        fontStyle: 'italic',
-        lineHeight: 1,
-        color: '#fff',
-        marginBottom: 8,
-      }}>
-        {t('contact_title')}
-      </h1>
-      <p className="text-sm text-white/30 font-light mb-8">{t('contact_sub')}</p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Social cards */}
-        <div>
-          <p className="text-[10px] font-semibold tracking-[2px] text-white/18 uppercase mb-3.5">Social Media</p>
-          <div className="grid grid-cols-1 gap-2">
-            {socials.map(s => (
-              <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-3.5 px-4 py-3.5 bg-[#141414] border border-white/[0.06] rounded-xl hover:border-white/20 hover:bg-white/[0.03] transition-all group">
-                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.07] flex items-center justify-center text-sm text-white/50">{s.icon}</div>
-                <div>
-                  <div className="text-[10px] font-semibold text-white/25 tracking-widest uppercase">{s.platform}</div>
-                  <div className="text-sm font-medium text-white/65">{s.handle}</div>
-                </div>
-                <span className="ml-auto text-white/15 group-hover:text-white/50 transition-colors">→</span>
-              </a>
-            ))}
+    <>
+      <div className="max-w-[960px] mx-auto px-8 pt-7">
+        {/* HERO SECTION */}
+        <section id="about" className="flex flex-wrap md:flex-nowrap items-start justify-between gap-7">
+          <div className="w-full md:w-[240px] shrink-0">
+            <h1 className="font-serif text-[clamp(3.2rem,6.5vw,5.5rem)] font-semibold italic leading-[0.95] tracking-[-0.5px] text-white">
+              Ruslan<br />Dubov
+            </h1>
           </div>
-        </div>
+          <div className="flex-1 pt-2 order-3 md:order-none min-w-full md:min-w-0">
+            <div className="text-[0.88rem] text-white/40 leading-[1.85] font-light">
+              <p dangerouslySetInnerHTML={{ __html: t('bio1') || 'My name is <strong>Ruslan Dubov</strong> &mdash; a content creator at the intersection of <strong>AI, visual art, and mindful living</strong>. I create videos, AI artworks, and music that tell stories without unnecessary words.' }} />
+              <p className="mt-2.5" dangerouslySetInnerHTML={{ __html: t('bio2') || 'I work with: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong> &mdash; turning ideas into a finished product faster than ever.' }} />
+              
+              <div className="flex flex-wrap gap-1.5 mt-3.5">
+                {['AI Content', 'Video Production', 'AI Art', 'Music AI', 'Adaptogens', 'Storytelling'].map(tag => (
+                  <span key={tag} className="px-3.5 py-1 bg-white/[0.04] border border-white/10 rounded-full text-[0.72rem] text-white/30 tracking-[0.2px]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="shrink-0 w-[110px] h-[110px] md:w-[155px] md:h-[155px] rounded-full bg-gradient-to-br from-[#3a3a3a] to-[#1a1a1a] p-[3px] shadow-[0_0_0_1px_rgba(255,255,255,0.12),0_0_40px_rgba(255,255,255,0.05)]">
+            <div className="w-full h-full rounded-full overflow-hidden bg-[#1a1a1a]">
+              <Image src="/photo.jpg" alt="Ruslan Dubov" width={155} height={155} className="w-full h-full object-cover object-top" />
+            </div>
+          </div>
+        </section>
 
-        {/* Email form */}
-        <div>
-          <p className="text-[10px] font-semibold tracking-[2px] text-white/18 uppercase mb-3.5">Send Message</p>
-          <form onSubmit={handleSend} className="space-y-3">
-            <input
-              required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-              placeholder={t('contact_name')}
-              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/70 placeholder-white/20 outline-none focus:border-white/20"
-            />
-            <input
-              required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-              placeholder={t('contact_email')}
-              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/70 placeholder-white/20 outline-none focus:border-white/20"
-            />
-            <textarea
-              required rows={4} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-              placeholder={t('contact_msg')}
-              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/70 placeholder-white/20 outline-none focus:border-white/20 resize-none"
-            />
-            <button
-              type="submit" disabled={status === 'sending'}
-              className="w-full py-3 rounded-xl bg-white/[0.08] border border-white/10 text-sm font-medium text-white/70 hover:bg-white/14 hover:text-white transition-all disabled:opacity-40"
-            >
-              {status === 'sending' ? '...' : status === 'sent' ? t('contact_sent') : t('contact_send')}
-            </button>
-            {status === 'error' && <p className="text-red-400/70 text-xs text-center">{t('contact_error')}</p>}
-          </form>
-        </div>
+        {/* WORK SECTION - Contact Form */}
+        <section id="work" className="mt-12 md:mt-16 pb-12">
+          <h2 className="font-serif text-[1.6rem] italic font-semibold text-white/45 mb-6 tracking-[0.5px] text-center">
+            {t('contact_title')}
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Social cards */}
+            <div>
+              <p className="text-[10px] font-semibold tracking-[2px] text-white/18 uppercase mb-3.5">Social Media</p>
+              <div className="grid grid-cols-1 gap-2">
+                {socials.map(s => (
+                  <a key={s.platform} href={s.href} target="_blank" rel="noopener noreferrer"
+                    className="flex items-center gap-3.5 px-4 py-3.5 bg-[#141414] border border-white/[0.06] rounded-xl hover:border-white/20 hover:bg-white/[0.03] transition-all group">
+                    <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.07] flex items-center justify-center text-sm text-white/50">{s.icon}</div>
+                    <div>
+                      <div className="text-[10px] font-semibold text-white/25 tracking-widest uppercase">{s.platform}</div>
+                      <div className="text-sm font-medium text-white/65">{s.handle}</div>
+                    </div>
+                    <span className="ml-auto text-white/15 group-hover:text-white/50 transition-colors">→</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Email form */}
+            <div>
+              <p className="text-[10px] font-semibold tracking-[2px] text-white/18 uppercase mb-3.5">Send Message</p>
+              <form onSubmit={handleSend} className="space-y-3">
+                <input
+                  required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  placeholder={t('contact_name')}
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/70 placeholder-white/20 outline-none focus:border-white/20"
+                />
+                <input
+                  required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                  placeholder={t('contact_email')}
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/70 placeholder-white/20 outline-none focus:border-white/20"
+                />
+                <textarea
+                  required rows={4} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                  placeholder={t('contact_msg')}
+                  className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/70 placeholder-white/20 outline-none focus:border-white/20 resize-none"
+                />
+                <button
+                  type="submit" disabled={status === 'sending'}
+                  className="w-full py-3 rounded-xl bg-white/[0.08] border border-white/10 text-sm font-medium text-white/70 hover:bg-white/14 hover:text-white transition-all disabled:opacity-40"
+                >
+                  {status === 'sending' ? '...' : status === 'sent' ? t('contact_sent') : t('contact_send')}
+                </button>
+                {status === 'error' && <p className="text-red-400/70 text-xs text-center">{t('contact_error')}</p>}
+              </form>
+            </div>
+          </div>
+        </section>
+
       </div>
-    </div>
+    </>
   );
 }
-
