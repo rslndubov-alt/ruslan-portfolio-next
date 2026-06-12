@@ -17,7 +17,7 @@ export default function ArtsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-8 py-9">
-      <div className="mb-2 overflow-hidden">
+      <div className="mb-2">
         <PatternText
           text={t('arts_title')}
           className="!text-[3.5rem] md:!text-[5rem] !font-semibold italic leading-none"

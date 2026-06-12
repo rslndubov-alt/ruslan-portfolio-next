@@ -7,57 +7,52 @@ import { getResumeVideoUrls } from '@/lib/supabase';
 export default function AboutPage() {
   const { t } = useLang();
   const [videos, setVideos] = useState<string[]>([]);
-  const [activeVideo, setActiveVideo] = useState<number>(0);
+  const [activeVideo, setActiveVideo] = useState(0);
 
   useEffect(() => {
-    getResumeVideoUrls().then(urls => {
-      setVideos(urls);
-    });
+    getResumeVideoUrls().then(setVideos);
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto px-8 py-9">
-      {/* ── Hero heading ─────────────────────────────── */}
-      <div className="mb-3 overflow-hidden">
+    <div className="max-w-3xl mx-auto px-6 py-10">
+
+      {/* ── Heading ─────────────────────────────────── */}
+      <div className="mb-1">
         <PatternText
           text={t('about_title')}
-          className="!text-[3.5rem] md:!text-[5rem] !font-semibold italic leading-none"
+          className="text-5xl md:text-7xl font-semibold italic leading-none"
           style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
         />
       </div>
-      <p className="text-sm text-white/30 font-light mb-10">{t('about_sub')}</p>
+      <p className="text-sm text-white/30 font-light mb-8 mt-2">{t('about_sub')}</p>
 
       {/* ── Resume video player ──────────────────────── */}
       {videos.length > 0 && (
-        <div className="mb-10">
-          {/* Main player */}
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/[0.07] mb-3">
-            <video
-              key={videos[activeVideo]}
-              src={videos[activeVideo]}
-              controls
-              autoPlay={false}
-              playsInline
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="mb-8">
+          <video
+            key={videos[activeVideo]}
+            src={videos[activeVideo]}
+            controls
+            playsInline
+            className="w-full aspect-video rounded-2xl bg-black border border-white/[0.07] object-cover"
+          />
 
           {/* Thumbnail strip */}
           {videos.length > 1 && (
-            <div className="flex gap-2 overflow-x-auto pb-1">
+            <div className="flex gap-2 mt-2 overflow-x-auto pb-1">
               {videos.map((url, i) => (
                 <button
-                  key={url}
+                  key={url + i}
                   onClick={() => setActiveVideo(i)}
-                  className={`relative flex-shrink-0 w-24 aspect-video rounded-xl overflow-hidden border transition-all duration-200 ${
+                  className={`relative flex-shrink-0 w-20 aspect-video rounded-lg overflow-hidden border transition-all ${
                     i === activeVideo
-                      ? 'border-white/50 scale-[1.04]'
-                      : 'border-white/[0.08] opacity-50 hover:opacity-80 hover:border-white/25'
+                      ? 'border-white/60 opacity-100'
+                      : 'border-white/10 opacity-40 hover:opacity-70'
                   }`}
                 >
                   <video src={url} muted playsInline preload="metadata" className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-6 h-6 rounded-full bg-black/60 flex items-center justify-center text-[10px] text-white">▶</div>
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <span className="text-white text-[10px]">▶</span>
                   </div>
                 </button>
               ))}
@@ -67,33 +62,39 @@ export default function AboutPage() {
       )}
 
       {/* ── Bio + Tools ──────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-7">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Bio */}
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
           <p className="text-white/60 text-sm leading-relaxed font-light">
             Content creator at the intersection of{' '}
             <strong className="text-white/80">AI, visual art, and mindful living</strong>.
             I create videos, AI artworks, and music that tell stories without unnecessary words.
           </p>
-          <p className="text-white/40 text-sm leading-relaxed font-light mt-4">
-            Working with: <strong className="text-white/60">ChatGPT, Midjourney, Claude, Suno, Google AI</strong>
+          <p className="text-white/40 text-sm leading-relaxed font-light mt-3">
+            Working with:{' '}
+            <strong className="text-white/60">ChatGPT, Midjourney, Claude, Suno, Google AI</strong>
           </p>
-          <div className="flex flex-wrap gap-2 mt-6">
-            {['AI Content', 'Video Production', 'AI Art', 'Music AI', 'Adaptogens', 'Storytelling'].map(tag => (
-              <span key={tag} className="px-3 py-1 bg-white/[0.06] border border-white/[0.08] rounded-full text-xs text-white/40">
+          <div className="flex flex-wrap gap-1.5 mt-5">
+            {['AI Content', 'Video', 'AI Art', 'Music AI', 'Adaptogens'].map(tag => (
+              <span
+                key={tag}
+                className="px-2.5 py-1 bg-white/[0.05] border border-white/[0.07] rounded-full text-[11px] text-white/35"
+              >
                 {tag}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-7">
+        {/* Tools */}
+        <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-6">
           <h2
             style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
-            className="text-2xl font-semibold italic text-white/70 mb-4"
+            className="text-xl font-semibold italic text-white/60 mb-4"
           >
             Skills & Tools
           </h2>
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-2">
             {[
               { name: 'Midjourney', icon: '⛵' },
               { name: 'ChatGPT', icon: '✦' },
@@ -104,11 +105,11 @@ export default function AboutPage() {
               { name: 'CapCut', icon: '▶' },
               { name: 'Illustrator', icon: 'Ai' },
             ].map(tool => (
-              <div key={tool.name} className="flex flex-col items-center gap-1.5">
-                <div className="w-11 h-11 rounded-xl bg-white/[0.05] border border-white/[0.07] flex items-center justify-center text-base text-white/60">
+              <div key={tool.name} className="flex flex-col items-center gap-1">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.06] flex items-center justify-center text-sm text-white/55">
                   {tool.icon}
                 </div>
-                <span className="text-[10px] text-white/30">{tool.name}</span>
+                <span className="text-[9px] text-white/25 text-center leading-tight">{tool.name}</span>
               </div>
             ))}
           </div>
