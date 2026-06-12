@@ -1,11 +1,23 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { useLang } from '@/lib/i18n';
 import { PatternText } from '@/components/ui/pattern-text';
+import { getResumeVideoUrls } from '@/lib/supabase';
 
 export default function AboutPage() {
   const { t } = useLang();
+  const [videos, setVideos] = useState<string[]>([]);
+  const [activeVideo, setActiveVideo] = useState<number>(0);
+
+  useEffect(() => {
+    getResumeVideoUrls().then(urls => {
+      setVideos(urls);
+    });
+  }, []);
+
   return (
     <div className="max-w-4xl mx-auto px-8 py-9">
+      {/* ── Hero heading ─────────────────────────────── */}
       <div className="mb-3 overflow-hidden">
         <PatternText
           text={t('about_title')}
@@ -13,12 +25,53 @@ export default function AboutPage() {
           style={{ fontFamily: 'Cormorant Garamond, Georgia, serif' }}
         />
       </div>
-      <p className="text-sm text-white/30 font-light mb-12">{t('about_sub')}</p>
+      <p className="text-sm text-white/30 font-light mb-10">{t('about_sub')}</p>
 
+      {/* ── Resume video player ──────────────────────── */}
+      {videos.length > 0 && (
+        <div className="mb-10">
+          {/* Main player */}
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/[0.07] mb-3">
+            <video
+              key={videos[activeVideo]}
+              src={videos[activeVideo]}
+              controls
+              autoPlay={false}
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Thumbnail strip */}
+          {videos.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {videos.map((url, i) => (
+                <button
+                  key={url}
+                  onClick={() => setActiveVideo(i)}
+                  className={`relative flex-shrink-0 w-24 aspect-video rounded-xl overflow-hidden border transition-all duration-200 ${
+                    i === activeVideo
+                      ? 'border-white/50 scale-[1.04]'
+                      : 'border-white/[0.08] opacity-50 hover:opacity-80 hover:border-white/25'
+                  }`}
+                >
+                  <video src={url} muted playsInline preload="metadata" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-black/60 flex items-center justify-center text-[10px] text-white">▶</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Bio + Tools ──────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl p-7">
           <p className="text-white/60 text-sm leading-relaxed font-light">
-            Content creator at the intersection of <strong className="text-white/80">AI, visual art, and mindful living</strong>.
+            Content creator at the intersection of{' '}
+            <strong className="text-white/80">AI, visual art, and mindful living</strong>.
             I create videos, AI artworks, and music that tell stories without unnecessary words.
           </p>
           <p className="text-white/40 text-sm leading-relaxed font-light mt-4">
