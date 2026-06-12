@@ -17,7 +17,7 @@ export default function ArtsPage() {
 
   return (
     <>
-      <div className="max-w-[960px] mx-auto px-8 pt-7">
+      <div className="w-full px-8 pt-7">
         {/* HERO SECTION */}
         <section id="about" className="flex flex-wrap md:flex-nowrap items-start justify-between gap-7">
           <div className="w-full md:w-[240px] shrink-0">

@@ -20,11 +20,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <I18nProvider>
           <BeamsBackground />
-          <Navbar />
-          <main>{children}</main>
-          <footer className="text-center py-5 text-white/15 text-xs border-t border-white/[0.04] mt-10">
-            © 2026 · Ruslan Dubov · AI. Art. Adaptogens.
-          </footer>
+          <div className="w-full max-w-[960px] mx-auto flex flex-col min-h-screen relative">
+            <Navbar />
+            <main className="w-full flex-1">{children}</main>
+            <footer className="w-full text-center py-5 text-white/15 text-xs border-t border-white/[0.04] mt-10">
+              © 2026 · Ruslan Dubov · AI. Art. Adaptogens.
+            </footer>
+          </div>
           <AiChatWidget />
         </I18nProvider>
       </body>
