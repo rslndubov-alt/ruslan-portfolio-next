@@ -51,7 +51,7 @@ export default function Hero() {
           {pathname !== '/contact' && (
             <>
               <div className="hero-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '14px' }}>
-                {['AI Content', 'Prompt Engineering', 'AI Research', 'Video Production', 'AI Art', 'Music AI'].map(tag => (
+                {['AI Content', 'Prompt Engineering', 'AI Research', 'Video Production', 'AI Art', 'Music AI', 'ChatGPT', 'Midjourney', 'Claude', 'Suno AI', 'Google AI'].map(tag => (
                   <span key={tag} style={{
                     padding: '3px 10px',
                     background: 'rgba(255,255,255,0.15)',
@@ -65,17 +65,6 @@ export default function Hero() {
                   }}>
                     {tag}
                   </span>
-                ))}
-              </div>
-              <div className="hero-socials" style={{ marginTop: '12px' }}>
-                {['ChatGPT', 'Midjourney', 'Claude', 'Suno AI', 'Google AI'].map(tool => (
-                  <span key={tool} style={{
-                    display: 'inline-flex', alignItems: 'center',
-                    padding: '4px 12px', background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
-                    fontSize: '0.68rem', color: 'rgba(255,255,255,0.7)', fontWeight: 400,
-                    marginRight: '5px'
-                  }}>{tool}</span>
                 ))}
               </div>
             </>
