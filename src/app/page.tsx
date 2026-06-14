@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import { useLang } from '@/lib/i18n';
 import { getResumeVideoUrls } from '@/lib/supabase';
+import { useMediaMeta } from '@/lib/useMediaMeta';
 import Hero from '@/components/Hero';
 import { Play } from 'lucide-react';
 
 export default function AboutPage() {
   const { lang, t } = useLang();
+  const { getMeta } = useMediaMeta();
   const [videos, setVideos] = useState<string[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
 
@@ -46,8 +48,21 @@ export default function AboutPage() {
               style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)', display: 'block' }}
             />
             <div style={{ marginTop: '8px', paddingLeft: '2px' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 500, color: 'rgba(255,255,255,0.65)' }}>{getName(videos[activeIdx])}</div>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.28)' }}>AI · Ruslan Dubov</div>
+              {(() => {
+                const meta = getMeta(videos[activeIdx], lang);
+                const title = meta?.title || getName(videos[activeIdx]);
+                const desc = meta?.desc;
+                return (
+                  <>
+                    <div style={{ fontSize: '0.82rem', fontWeight: 500, color: 'rgba(255,255,255,0.85)' }}>{title}</div>
+                    {desc ? (
+                      <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.45)', marginTop: '2px', lineHeight: 1.4 }}>{desc}</div>
+                    ) : (
+                      <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.28)' }}>AI · Ruslan Dubov</div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
 
             {videos.length > 1 && (

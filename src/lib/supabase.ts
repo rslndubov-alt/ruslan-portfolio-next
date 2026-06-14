@@ -154,3 +154,21 @@ export async function getAvatarUrl(): Promise<string> {
     
   return `${publicUrlData.publicUrl}?t=${new Date().getTime()}`;
 }
+
+export type MediaMeta = {
+  file_name: string;
+  title_en: string | null;
+  title_uk: string | null;
+  title_ru: string | null;
+  desc_en: string | null;
+  desc_uk: string | null;
+  desc_ru: string | null;
+};
+
+export async function getMediaMetadata(): Promise<MediaMeta[]> {
+  const { data, error } = await supabase
+    .from('media_meta')
+    .select('*');
+  if (error || !data) return [];
+  return data as MediaMeta[];
+}

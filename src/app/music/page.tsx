@@ -2,10 +2,12 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLang } from '@/lib/i18n';
 import { getMusicByCategory, getMusicFolders, getArtsAllCategories } from '@/lib/supabase';
+import { useMediaMeta } from '@/lib/useMediaMeta';
 import Hero from '@/components/Hero';
 
 export default function MusicPage() {
-  const { t } = useLang();
+  const { lang, t } = useLang();
+  const { getMeta } = useMediaMeta();
   const [tracks, setTracks] = useState<string[]>([]);
   const [arts, setArts] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -143,16 +145,25 @@ export default function MusicPage() {
                 display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
               }}>
                 <div>
-                  <div style={{
-                    fontSize: '1.1rem', fontWeight: 600, color: '#fff',
-                    textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-                    marginBottom: '4px',
-                  }}>
-                    {getName(tracks[playingIdx])}
-                  </div>
-                  <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)' }}>
-                    AI · Suno · Ruslan Dubov
-                  </div>
+                  {(() => {
+                    const meta = getMeta(tracks[playingIdx], lang);
+                    const title = meta?.title || getName(tracks[playingIdx]);
+                    const desc = meta?.desc;
+                    return (
+                      <>
+                        <div style={{
+                          fontSize: '1.1rem', fontWeight: 600, color: '#fff',
+                          textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                          marginBottom: '4px',
+                        }}>
+                          {title}
+                        </div>
+                        <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)', textShadow: '0 1px 4px rgba(0,0,0,0.5)', maxWidth: '90%', lineHeight: 1.3 }}>
+                          {desc || 'AI · Suno · Ruslan Dubov'}
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
                 <div style={{
                   background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)',
@@ -196,8 +207,19 @@ export default function MusicPage() {
                     )}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>{getName(url)}</div>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)', marginTop: '2px' }}>AI · Suno · Ruslan Dubov</div>
+                    {(() => {
+                      const meta = getMeta(url, lang);
+                      const title = meta?.title || getName(url);
+                      const desc = meta?.desc;
+                      return (
+                        <>
+                          <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>{title}</div>
+                          <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px', lineHeight: 1.3 }}>
+                            {desc || 'AI · Suno · Ruslan Dubov'}
+                          </div>
+                        </>
+                      );
+                    })()}
                   </div>
                 </div>
                 <audio

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLang } from '@/lib/i18n';
+import { useMediaMeta } from '@/lib/useMediaMeta';
 
 const CARDS_PER_VIEW = 3;
 const AUTO_MS = 4500;
@@ -11,7 +12,8 @@ interface Props {
 }
 
 export default function ArtCarousel({ images, searchQuery = '' }: Props) {
-  const { t } = useLang();
+  const { lang, t } = useLang();
+  const { getMeta } = useMediaMeta();
   const [featuredIdx, setFeaturedIdx] = useState(0);
   const [carouselStart, setCarouselStart] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -106,6 +108,18 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
           {featuredIdx + 1} / {total}
         </span>
       </div>
+      
+      {/* Metadata for featured image */}
+      {(() => {
+        const meta = getMeta(filtered[featuredIdx], lang);
+        if (!meta || (!meta.title && !meta.desc)) return null;
+        return (
+          <div className="mb-4 mt-2 px-1">
+            {meta.title && <h3 className="text-white/90 text-base font-semibold">{meta.title}</h3>}
+            {meta.desc && <p className="text-white/50 text-xs mt-1 leading-relaxed max-w-2xl">{meta.desc}</p>}
+          </div>
+        );
+      })()}
 
       {/* Progress bar */}
       <div className="w-full h-0.5 bg-white/[0.06] rounded-full mb-3 overflow-hidden">
