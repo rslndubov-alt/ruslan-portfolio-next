@@ -64,7 +64,7 @@ export default function Hero() {
           {pathname !== '/contact' && (
             <>
               <div className="hero-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '14px' }}>
-                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '6px' }}>
+                <div style={{ width: '92%', display: 'flex', justifyContent: 'center', marginBottom: '6px' }}>
                   <span style={{
                     width: '60%', /* slightly stretched */
                     maxWidth: '220px',
