@@ -37,14 +37,37 @@ export default function Hero() {
   return (
     <section className="hero-container">
       {/* Name */}
-      <div className="hero-name">
-        <h1 style={{
+      <div className="hero-name" style={{ position: 'relative' }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes blurIn {
+            0% { filter: blur(16px); opacity: 0; transform: scale(0.95) translateY(10px); }
+            100% { filter: blur(0px); opacity: 1; transform: scale(1) translateY(0); }
+          }
+          @keyframes shine {
+            to { background-position: 200% center; }
+          }
+          .modern-text-effect {
+            background: linear-gradient(
+              110deg,
+              #ffffff 30%,
+              rgba(255, 255, 255, 0.4) 50%,
+              #ffffff 70%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: 
+              blurIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+              shine 6s linear infinite;
+          }
+        `}} />
+        <h1 className="modern-text-effect" style={{
           fontFamily: 'Arial, Helvetica, sans-serif',
           fontSize: 'clamp(2.8rem, 5.5vw, 4.5rem)',
           fontWeight: 600,
           lineHeight: 1,
           letterSpacing: '-0.5px',
-          color: '#fff',
         }}>
           Ruslan<br />Dubov
         </h1>
