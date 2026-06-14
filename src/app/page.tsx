@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useLang } from '@/lib/i18n';
-import { getResumeVideoUrls } from '@/lib/supabase';
+import { getResumeVideoUrls, getArtsUrls } from '@/lib/supabase';
 import { X, Play } from 'lucide-react';
 import Image from 'next/image';
 
@@ -11,7 +11,9 @@ export default function AboutPage() {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
 
   useEffect(() => {
-    getResumeVideoUrls().then(v => setVideos(v));
+    Promise.all([getResumeVideoUrls(), getArtsUrls()]).then(([v, a]) => {
+      setVideos([...v, ...a]);
+    });
   }, []);
 
   // Pad videos to always show 5 slots for the layout
