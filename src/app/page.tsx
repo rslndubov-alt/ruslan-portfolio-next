@@ -27,6 +27,23 @@ export default function AboutPage() {
     <div style={{ paddingTop: '28px' }}>
       <Hero />
 
+      {/* ── DOWNLOAD RESUME ── */}
+      <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+        <a
+          href="/Ruslan_Dubov_Resume.txt"
+          download
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            padding: '10px 24px', background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.12)', borderRadius: '100px',
+            fontSize: '0.8rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)',
+            cursor: 'pointer', transition: 'all 0.2s', textDecoration: 'none',
+          }}
+        >
+          ↓ Download Resume
+        </a>
+      </div>
+
       {/* ── VIDEO PLAYER + CAROUSEL (bucket: resume) ── */}
       <section style={{ marginTop: '32px' }}>
         {videos.length > 0 ? (
