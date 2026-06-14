@@ -38,6 +38,8 @@ export default function VideoPage() {
               key={videos[activeIdx]}
               src={videos[activeIdx]}
               controls
+              controlsList="nodownload"
+              onContextMenu={e => e.preventDefault()}
               playsInline
               style={{ width: '100%', aspectRatio: '16/9', background: '#000', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.06)', display: 'block' }}
             />
@@ -60,7 +62,7 @@ export default function VideoPage() {
                       transition: 'all 0.2s',
                     }}
                   >
-                    <video src={url} muted playsInline preload="metadata" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <video src={url} muted playsInline preload="metadata" controlsList="nodownload" onContextMenu={e => e.preventDefault()} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </button>
                 ))}
               </div>

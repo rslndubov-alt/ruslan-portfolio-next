@@ -79,6 +79,7 @@ export default function MusicPage() {
                   src={url}
                   controls
                   controlsList="nodownload"
+                  onContextMenu={e => e.preventDefault()}
                   onPlay={() => handlePlay(i)}
                   onPause={() => { if (playingIdx === i) setPlayingIdx(null); }}
                   style={{ width: '100%', height: '36px', borderRadius: '8px' }}
