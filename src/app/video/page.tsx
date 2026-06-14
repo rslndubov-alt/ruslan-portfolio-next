@@ -1,18 +1,27 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useLang } from '@/lib/i18n';
-import { getVideoUrls } from '@/lib/supabase';
+import { getVideoByCategory, getVideoFolders } from '@/lib/supabase';
 import Hero from '@/components/Hero';
 import { Play } from 'lucide-react';
 
 export default function VideoPage() {
   const { t } = useLang();
   const [videos, setVideos] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [activeCategory, setActiveCategory] = useState('all');
   const [activeIdx, setActiveIdx] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getVideoUrls().then(setVideos);
+    getVideoFolders().then(setCategories);
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    setActiveIdx(0);
+    getVideoByCategory(activeCategory).then(urls => { setVideos(urls); setLoading(false); });
+  }, [activeCategory]);
 
   const getName = (url: string) => {
     try {
@@ -23,6 +32,8 @@ export default function VideoPage() {
     } catch { return ''; }
   };
 
+  const label = (cat: string) => cat.charAt(0).toUpperCase() + cat.slice(1);
+
   return (
     <div style={{ paddingTop: '28px' }}>
       <Hero />
@@ -32,7 +43,40 @@ export default function VideoPage() {
           {t('video_title')}
         </h2>
 
-        {videos.length > 0 ? (
+        {/* ── DYNAMIC FILTER BUTTONS ── */}
+        {categories.length > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setActiveCategory('all')}
+              style={{
+                padding: '8px 20px', borderRadius: '100px',
+                border: activeCategory === 'all' ? '1px solid rgba(255,255,255,0.35)' : '1px solid rgba(255,255,255,0.08)',
+                background: activeCategory === 'all' ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.03)',
+                color: activeCategory === 'all' ? '#fff' : 'rgba(255,255,255,0.4)',
+                fontSize: '0.8rem', fontWeight: activeCategory === 'all' ? 600 : 400,
+                cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit', letterSpacing: '0.3px',
+              }}
+            >All</button>
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                style={{
+                  padding: '8px 20px', borderRadius: '100px',
+                  border: activeCategory === cat ? '1px solid rgba(255,255,255,0.35)' : '1px solid rgba(255,255,255,0.08)',
+                  background: activeCategory === cat ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.03)',
+                  color: activeCategory === cat ? '#fff' : 'rgba(255,255,255,0.4)',
+                  fontSize: '0.8rem', fontWeight: activeCategory === cat ? 600 : 400,
+                  cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit', letterSpacing: '0.3px',
+                }}
+              >{label(cat)}</button>
+            ))}
+          </div>
+        )}
+
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(255,255,255,0.2)', fontSize: '0.85rem' }}>Loading...</div>
+        ) : videos.length > 0 ? (
           <div>
             <video
               key={videos[activeIdx]}

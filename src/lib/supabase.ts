@@ -70,9 +70,41 @@ export async function getArtsUrls(): Promise<string[]> {
 }
 
 // ─── Bucket: "videos" ─────────────────────────────────────────────────────────
-// Video works / content — shown on the Video page
+const VID_RE = /\.(mp4|webm|mov|avi)$/i;
+
+// Dynamically discover subfolders in the videos bucket
+export async function getVideoFolders(): Promise<string[]> {
+  const { data, error } = await supabase.storage
+    .from('videos')
+    .list('', { limit: 100, sortBy: { column: 'name', order: 'asc' } });
+  if (error || !data) return [];
+  return data
+    .filter(item => item.id === null || item.metadata === null)
+    .map(item => item.name)
+    .filter(name => !VID_RE.test(name));
+}
+
+// Fetch videos from a specific subfolder (or all)
+export async function getVideoByCategory(category: string): Promise<string[]> {
+  if (category === 'all' || category === '') {
+    return getVideoAllCategories();
+  }
+  return listUrls('videos', category, VID_RE, 100);
+}
+
+// Fetch ALL videos from root + all discovered subfolders
+export async function getVideoAllCategories(): Promise<string[]> {
+  const folders = await getVideoFolders();
+  const allFolders = ['', ...folders];
+  const results = await Promise.all(
+    allFolders.map(f => listUrls('videos', f, VID_RE, 100))
+  );
+  return results.flat();
+}
+
+// Legacy: fetch root only
 export async function getVideoUrls(): Promise<string[]> {
-  return listUrls('videos', '', /\.(mp4|webm|mov|avi)$/i, 100);
+  return listUrls('videos', '', VID_RE, 100);
 }
 
 // ─── Bucket: "music" ──────────────────────────────────────────────────────────
