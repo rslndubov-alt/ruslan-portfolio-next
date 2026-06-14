@@ -12,6 +12,7 @@ export default function Navbar() {
     { href: '/', key: 'nav_about' as const },
     { href: '/arts', key: 'nav_arts' as const },
     { href: '/video', key: 'nav_video' as const },
+    { href: '/music', key: 'nav_music' as const },
     { href: '/contact', key: 'nav_contact' as const },
   ];
 

@@ -31,9 +31,42 @@ export async function getResumeVideoUrls(): Promise<string[]> {
 }
 
 // ─── Bucket: "arts" ───────────────────────────────────────────────────────────
-// AI-generated artworks (images) — shown on the Arts page
+const IMG_RE = /\.(jpg|jpeg|png|webp|gif|avif)$/i;
+
+// Dynamically discover subfolders in the arts bucket
+export async function getArtsFolders(): Promise<string[]> {
+  const { data, error } = await supabase.storage
+    .from('arts')
+    .list('', { limit: 100, sortBy: { column: 'name', order: 'asc' } });
+  if (error || !data) return [];
+  // Folders in Supabase have no metadata (null) and id is null
+  return data
+    .filter(item => item.id === null || item.metadata === null)
+    .map(item => item.name)
+    .filter(name => !IMG_RE.test(name)); // exclude files, keep only folders
+}
+
+// Fetch arts from a specific subfolder (or root)
+export async function getArtsByCategory(category: string): Promise<string[]> {
+  if (category === 'all' || category === '') {
+    return getArtsAllCategories();
+  }
+  return listUrls('arts', category, IMG_RE, 300);
+}
+
+// Fetch ALL arts from root + all discovered subfolders
+export async function getArtsAllCategories(): Promise<string[]> {
+  const folders = await getArtsFolders();
+  const allFolders = ['', ...folders];
+  const results = await Promise.all(
+    allFolders.map(f => listUrls('arts', f, IMG_RE, 300))
+  );
+  return results.flat();
+}
+
+// Legacy: fetch root only
 export async function getArtsUrls(): Promise<string[]> {
-  return listUrls('arts', '', /\.(jpg|jpeg|png|webp|gif|avif)$/i, 300);
+  return listUrls('arts', '', IMG_RE, 300);
 }
 
 // ─── Bucket: "videos" ─────────────────────────────────────────────────────────
