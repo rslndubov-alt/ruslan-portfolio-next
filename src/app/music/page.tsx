@@ -1,18 +1,36 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLang } from '@/lib/i18n';
-import { getMusicUrls } from '@/lib/supabase';
+import { getMusicUrls, getArtsAllCategories } from '@/lib/supabase';
 import Hero from '@/components/Hero';
 
 export default function MusicPage() {
   const { t } = useLang();
   const [tracks, setTracks] = useState<string[]>([]);
+  const [arts, setArts] = useState<string[]>([]);
   const [playingIdx, setPlayingIdx] = useState<number | null>(null);
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
   useEffect(() => {
     getMusicUrls().then(setTracks);
+    getArtsAllCategories().then(setArts);
   }, []);
+
+  // Assign a stable random art to each track (seeded by track index)
+  const trackArts = useMemo(() => {
+    if (!arts.length) return [];
+    return tracks.map((_, i) => arts[(i * 7 + 3) % arts.length]);
+  }, [tracks, arts]);
+
+  // Random idle art (changes on page load)
+  const idleArt = useMemo(() => {
+    if (!arts.length) return '';
+    return arts[Math.floor(Math.random() * arts.length)];
+  }, [arts]);
+
+  const currentArt = playingIdx !== null && trackArts[playingIdx]
+    ? trackArts[playingIdx]
+    : idleArt;
 
   const getName = (url: string) => {
     try {
@@ -24,11 +42,8 @@ export default function MusicPage() {
   };
 
   const handlePlay = (idx: number) => {
-    // Pause all other tracks
     audioRefs.current.forEach((audio, i) => {
-      if (audio && i !== idx) {
-        audio.pause();
-      }
+      if (audio && i !== idx) audio.pause();
     });
     setPlayingIdx(idx);
   };
@@ -42,6 +57,44 @@ export default function MusicPage() {
           {((t as (key: string) => string)('music_title')) || 'Music'}
         </h2>
 
+        {/* ── ART VISUALIZER ── */}
+        {currentArt && (
+          <div style={{
+            width: '100%', maxHeight: '400px', marginBottom: '20px',
+            borderRadius: '16px', overflow: 'hidden',
+            border: '1px solid rgba(255,255,255,0.07)',
+            background: 'rgba(255,255,255,0.02)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            position: 'relative',
+          }}>
+            <img
+              src={currentArt}
+              alt="Now playing art"
+              onContextMenu={e => e.preventDefault()}
+              style={{
+                maxWidth: '100%', maxHeight: '400px', objectFit: 'contain',
+                display: 'block',
+                transition: 'opacity 0.6s ease',
+                opacity: playingIdx !== null ? 1 : 0.5,
+              }}
+            />
+            {playingIdx !== null && (
+              <div style={{
+                position: 'absolute', bottom: '12px', left: '12px',
+                background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)',
+                borderRadius: '100px', padding: '5px 14px',
+                fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex', alignItems: 'center', gap: '6px',
+              }}>
+                <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', animation: 'pulse 1.5s ease infinite' }} />
+                Now Playing
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── TRACK LIST ── */}
         {tracks.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {tracks.map((url, i) => (
@@ -56,14 +109,17 @@ export default function MusicPage() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
+                  {/* Track thumbnail from arts */}
                   <div style={{
-                    width: '36px', height: '36px', borderRadius: '50%',
-                    background: playingIdx === i ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '12px', color: 'rgba(255,255,255,0.4)', fontWeight: 600,
+                    width: '44px', height: '44px', borderRadius: '10px', overflow: 'hidden',
+                    flexShrink: 0, border: '1px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(255,255,255,0.04)',
                   }}>
-                    {String(i + 1).padStart(2, '0')}
+                    {trackArts[i] ? (
+                      <img src={trackArts[i]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onContextMenu={e => e.preventDefault()} />
+                    ) : (
+                      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', color: 'rgba(255,255,255,0.2)' }}>🎵</div>
+                    )}
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>
@@ -88,14 +144,18 @@ export default function MusicPage() {
             ))}
           </div>
         ) : (
-          <div style={{
-            padding: '60px 0', textAlign: 'center',
-            color: 'rgba(255,255,255,0.25)', fontSize: '0.85rem',
-          }}>
+          <div style={{ padding: '60px 0', textAlign: 'center', color: 'rgba(255,255,255,0.25)', fontSize: '0.85rem' }}>
             🎵 Upload music to Supabase &quot;music&quot; bucket
           </div>
         )}
       </section>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+        }
+      `}</style>
     </div>
   );
 }
