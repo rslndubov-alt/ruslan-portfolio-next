@@ -18,11 +18,10 @@ export default function MusicPage() {
       <section style={{ marginTop: '32px', paddingBottom: '48px' }}>
         <h2
           style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontSize: '1.6rem',
-            fontStyle: 'italic',
+            fontFamily: 'Arial, Helvetica, sans-serif',
+            fontSize: '2rem',
             fontWeight: 600,
-            color: 'rgba(255,255,255,0.45)',
+            color: '#fff',
             marginBottom: '28px',
             letterSpacing: '0.5px',
             textAlign: 'center',

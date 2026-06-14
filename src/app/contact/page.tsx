@@ -4,9 +4,7 @@ import { useLang } from '@/lib/i18n';
 import Hero from '@/components/Hero';
 
 const socials = [
-  { platform: 'YouTube', handle: '@ruslandubov5532', href: 'https://www.youtube.com/@ruslandubov5532', icon: '▶' },
   { platform: 'TikTok', handle: '@ruslan.dubov', href: 'https://www.tiktok.com/@ruslan.dubov', icon: '♪' },
-  { platform: 'Instagram', handle: '@ruslan.dubov', href: 'https://www.instagram.com/ruslan.dubov', icon: '◎' },
   { platform: 'Facebook', handle: 'rslndubov', href: 'https://www.facebook.com/rslndubov', icon: 'f' },
   { platform: 'Telegram', handle: '@Dubovruslan', href: 'https://t.me/Dubovruslan', icon: '✈' },
   { platform: 'Email', handle: 'rslndubov@gmail.com', href: 'mailto:rslndubov@gmail.com', icon: '✉' },
@@ -42,7 +40,7 @@ export default function ContactPage() {
       <Hero />
 
       <section style={{ marginTop: '32px', paddingBottom: '48px' }}>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.6rem', fontStyle: 'italic', fontWeight: 600, color: 'rgba(255,255,255,0.45)', marginBottom: '24px', letterSpacing: '0.5px', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2rem', fontWeight: 600, color: '#fff', marginBottom: '24px', letterSpacing: '0.5px', textAlign: 'center' }}>
           {t('contact_title')}
         </h2>
 

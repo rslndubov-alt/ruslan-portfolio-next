@@ -90,7 +90,7 @@ export default function AboutPage() {
 
       {/* ── TOOLS ── */}
       <section style={{ marginTop: '48px', textAlign: 'center', paddingBottom: '48px' }}>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: '1.6rem', fontStyle: 'italic', fontWeight: 600, color: 'rgba(255,255,255,0.45)', marginBottom: '24px', letterSpacing: '0.5px' }}>
+        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2rem', fontWeight: 600, color: '#fff', marginBottom: '24px', letterSpacing: '0.5px' }}>
           Skills &amp; Tools
         </h2>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>

@@ -41,11 +41,12 @@ export default function Hero() {
             {['AI Content', 'Video Production', 'AI Art', 'Music AI', 'Storytelling'].map(tag => (
               <span key={tag} style={{
                 padding: '4px 13px',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: '#fff',
+                border: 'none',
                 borderRadius: '100px',
                 fontSize: '0.72rem',
-                color: 'rgba(255,255,255,0.32)',
+                color: '#111',
+                fontWeight: 500,
                 letterSpacing: '0.2px',
               }}>
                 {tag}
