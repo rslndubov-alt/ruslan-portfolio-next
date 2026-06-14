@@ -74,3 +74,9 @@ export async function getArtsUrls(): Promise<string[]> {
 export async function getVideoUrls(): Promise<string[]> {
   return listUrls('videos', '', /\.(mp4|webm|mov|avi)$/i, 100);
 }
+
+// ─── Bucket: "music" ──────────────────────────────────────────────────────────
+// AI-composed music tracks — shown on the Music page
+export async function getMusicUrls(): Promise<string[]> {
+  return listUrls('music', '', /\.(mp3|wav|ogg|flac|m4a)$/i, 100);
+}

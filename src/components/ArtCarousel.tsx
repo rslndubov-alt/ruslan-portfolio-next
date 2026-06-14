@@ -92,11 +92,11 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
 
       {/* Featured hero */}
       <div className="relative w-full mb-3 cursor-pointer" onClick={() => setLbSrc(filtered[featuredIdx])}>
-        <div className="w-full aspect-video rounded-2xl overflow-hidden bg-white/[0.03] border border-white/[0.07]">
+        <div style={{ width: '100%', maxHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden' }}>
           <img
             src={filtered[featuredIdx]}
             alt="Featured art"
-            className="w-full h-full object-cover transition-all duration-500 hover:scale-[1.02]"
+            style={{ maxWidth: '100%', maxHeight: '75vh', objectFit: 'contain', display: 'block', transition: 'all 0.5s' }}
           />
         </div>
         <span className="absolute top-3.5 left-3.5 bg-black/55 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1 text-[10px] font-semibold text-white/50 tracking-widest uppercase">
