@@ -147,20 +147,10 @@ export async function getMusicUrls(): Promise<string[]> {
 
 // ─── Bucket: "avatar" ─────────────────────────────────────────────────────────
 export async function getAvatarUrl(): Promise<string> {
-  const { data, error } = await supabase.storage
+  // We fetch "AVATAR.jpeg" directly to bypass RLS list() requirements
+  const { data: publicUrlData } = supabase.storage
     .from('avatar')
-    .list('', { limit: 10 });
-  if (error || !data || data.length === 0) return '/photo.jpg';
-
-  const imgPattern = /\.(jpg|jpeg|png|webp|gif)$/i;
-  const file = data.find(f => imgPattern.test(f.name));
-  
-  if (file) {
-    const { data: publicUrlData } = supabase.storage
-      .from('avatar')
-      .getPublicUrl(file.name);
-    // Add timestamp to break cache if the user overwrites the same file
-    return `${publicUrlData.publicUrl}?t=${new Date().getTime()}`;
-  }
-  return '/photo.jpg';
+    .getPublicUrl('AVATAR.jpeg');
+    
+  return `${publicUrlData.publicUrl}?t=${new Date().getTime()}`;
 }

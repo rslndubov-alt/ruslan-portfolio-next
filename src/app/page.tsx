@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useLang } from '@/lib/i18n';
 import { getResumeVideoUrls } from '@/lib/supabase';
 import Hero from '@/components/Hero';
-import LogoSVG from '@/components/LogoSVG';
 import { Play } from 'lucide-react';
 
 export default function AboutPage() {
@@ -77,7 +76,9 @@ export default function AboutPage() {
 
       {/* ── LOGO ── */}
       <section style={{ marginTop: '48px', textAlign: 'center', paddingBottom: '48px' }}>
-        <LogoSVG />
+        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2.5rem', fontWeight: 800, color: '#fff', letterSpacing: '2px', textTransform: 'uppercase' }}>
+          RD AI PRODUCTION
+        </h2>
       </section>
     </div>
   );
