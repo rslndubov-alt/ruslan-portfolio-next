@@ -9,18 +9,21 @@ export default function Hero() {
   const { t } = useLang();
   const pathname = usePathname();
 
-  let firstBlockKey = 'bio1';
-  let secondBlockKey = 'bio2';
+  let firstBlockKey: string | null = 'bio1';
+  let secondBlockKey: string | null = 'bio2';
 
   if (pathname === '/contact') {
     firstBlockKey = 'contact_bio1';
     secondBlockKey = 'contact_bio2';
   } else if (pathname === '/arts') {
-    secondBlockKey = 'arts_desc';
+    firstBlockKey = 'arts_desc';
+    secondBlockKey = null;
   } else if (pathname === '/video') {
-    secondBlockKey = 'video_desc';
+    firstBlockKey = 'video_desc';
+    secondBlockKey = null;
   } else if (pathname === '/music') {
-    secondBlockKey = 'music_desc';
+    firstBlockKey = 'music_desc';
+    secondBlockKey = null;
   }
 
   const [avatarUrl, setAvatarUrl] = useState('/photo.jpg');
@@ -55,8 +58,8 @@ export default function Hero() {
           lineHeight: 1.85,
           fontWeight: 300,
         }}>
-          <p dangerouslySetInnerHTML={{ __html: t(firstBlockKey as any) || t('bio1') }} />
-          <p style={{ marginTop: '10px' }} dangerouslySetInnerHTML={{ __html: t(secondBlockKey as any) || t('bio2') }} />
+          {firstBlockKey && <p dangerouslySetInnerHTML={{ __html: t(firstBlockKey as any) }} />}
+          {secondBlockKey && <p style={{ marginTop: '10px' }} dangerouslySetInnerHTML={{ __html: t(secondBlockKey as any) }} />}
           
           {pathname !== '/contact' && (
             <>
