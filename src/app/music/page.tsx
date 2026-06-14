@@ -99,33 +99,59 @@ export default function MusicPage() {
         {/* ── ART VISUALIZER ── */}
         {currentArt && (
           <div style={{
-            width: '100%', maxHeight: '400px', marginBottom: '20px',
+            width: '100%', height: '420px', marginBottom: '20px',
             borderRadius: '16px', overflow: 'hidden',
             border: '1px solid rgba(255,255,255,0.07)',
-            background: 'rgba(255,255,255,0.02)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: '#000',
             position: 'relative',
           }}>
             <img
+              key={currentArt}
               src={currentArt} alt="Now playing art"
               onContextMenu={e => e.preventDefault()}
               style={{
-                maxWidth: '100%', maxHeight: '400px', objectFit: 'contain',
-                display: 'block', transition: 'opacity 0.6s ease',
-                opacity: playingIdx !== null ? 1 : 0.5,
+                width: '100%', height: '100%', objectFit: 'cover',
+                display: 'block',
+                opacity: playingIdx !== null ? 1 : 0.4,
+                transition: 'opacity 0.8s ease',
+                animation: playingIdx !== null ? 'kenburns 20s ease-in-out infinite alternate' : 'none',
+                transformOrigin: 'center center',
               }}
             />
+            {/* Dark gradient overlay */}
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.3) 100%)',
+              pointerEvents: 'none',
+            }} />
+            {/* Track info overlay */}
             {playingIdx !== null && (
               <div style={{
-                position: 'absolute', bottom: '12px', left: '12px',
-                background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)',
-                borderRadius: '100px', padding: '5px 14px',
-                fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                display: 'flex', alignItems: 'center', gap: '6px',
+                position: 'absolute', bottom: '16px', left: '16px', right: '16px',
+                display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
               }}>
-                <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', animation: 'pulse 1.5s ease infinite' }} />
-                Now Playing
+                <div>
+                  <div style={{
+                    fontSize: '1.1rem', fontWeight: 600, color: '#fff',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.5)',
+                    marginBottom: '4px',
+                  }}>
+                    {getName(tracks[playingIdx])}
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)' }}>
+                    AI · Suno · Ruslan Dubov
+                  </div>
+                </div>
+                <div style={{
+                  background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(8px)',
+                  borderRadius: '100px', padding: '5px 14px',
+                  fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  display: 'flex', alignItems: 'center', gap: '6px',
+                }}>
+                  <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', animation: 'pulse 1.5s ease infinite' }} />
+                  Now Playing
+                </div>
               </div>
             )}
           </div>
@@ -184,6 +210,20 @@ export default function MusicPage() {
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.3; }
+        }
+        @keyframes kenburns {
+          0% {
+            transform: scale(1) translate(0, 0);
+          }
+          33% {
+            transform: scale(1.08) translate(-1%, 1%);
+          }
+          66% {
+            transform: scale(1.12) translate(1%, -0.5%);
+          }
+          100% {
+            transform: scale(1.15) translate(-0.5%, 0.5%);
+          }
         }
       `}</style>
     </div>
