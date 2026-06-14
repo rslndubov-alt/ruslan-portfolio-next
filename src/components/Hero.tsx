@@ -54,6 +54,28 @@ export default function Hero() {
               </span>
             ))}
           </div>
+          <div style={{ marginTop: '16px' }}>
+            <a
+              href="/Ruslan_Dubov_Resume.pdf"
+              download
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                padding: '7px 18px',
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '100px',
+                fontSize: '0.75rem',
+                color: 'rgba(255,255,255,0.5)',
+                fontWeight: 500,
+                letterSpacing: '0.3px',
+                textDecoration: 'none',
+                transition: 'all 0.2s',
+                cursor: 'pointer',
+              }}
+            >
+              ↓ Download Resume
+            </a>
+          </div>
         </div>
       </div>
 
