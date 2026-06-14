@@ -76,9 +76,6 @@ export default function MusicPage() {
         <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2rem', fontWeight: 600, color: '#fff', marginBottom: '16px', letterSpacing: '0.5px', textAlign: 'center' }}>
           {((t as (key: string) => string)('music_title')) || 'Music'}
         </h2>
-        <p style={{ maxWidth: '800px', margin: '0 auto 32px auto', textAlign: 'center', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, fontWeight: 300 }}>
-          {((t as (key: string) => string)('music_desc'))}
-        </p>
 
         {/* ── DYNAMIC FILTER BUTTONS ── */}
         {categories.length > 0 && (

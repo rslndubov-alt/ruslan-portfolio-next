@@ -1,9 +1,16 @@
 'use client';
 import { useLang } from '@/lib/i18n';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function Hero() {
   const { t } = useLang();
+  const pathname = usePathname();
+
+  let secondBlockKey = 'bio2';
+  if (pathname === '/arts') secondBlockKey = 'arts_desc';
+  else if (pathname === '/video') secondBlockKey = 'video_desc';
+  else if (pathname === '/music') secondBlockKey = 'music_desc';
 
   return (
     <section style={{
@@ -36,7 +43,7 @@ export default function Hero() {
           fontWeight: 300,
         }}>
           <p dangerouslySetInnerHTML={{ __html: t('bio1') }} />
-          <p style={{ marginTop: '10px' }} dangerouslySetInnerHTML={{ __html: t('bio2') }} />
+          <p style={{ marginTop: '10px' }} dangerouslySetInnerHTML={{ __html: t(secondBlockKey as any) || t('bio2') }} />
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '14px' }}>
             {['AI Content', 'Prompt Engineering', 'AI Research', 'Video Production', 'AI Art', 'Music AI'].map(tag => (
               <span key={tag} style={{
