@@ -63,17 +63,20 @@ export default function Hero() {
               <div className="hero-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '14px' }}>
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginBottom: '6px' }}>
                   <span style={{
-                    padding: '5px 16px',
-                    background: 'linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)',
+                    width: '60%', /* slightly stretched */
+                    maxWidth: '220px',
+                    padding: '6px 16px',
+                    background: 'rgba(255,255,255,0.15)',
                     border: '1px solid rgba(255,255,255,0.2)',
                     borderRadius: '100px',
-                    fontSize: '0.72rem',
+                    fontSize: '0.75rem',
                     color: '#fff',
                     fontWeight: 600,
-                    letterSpacing: '0.5px',
+                    letterSpacing: '1px',
+                    textAlign: 'center',
                     boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
                   }}>
-                    ✨ Google AI
+                    GOOGLE AI
                   </span>
                 </div>
                 {['AI Content', 'Prompt Engineering', 'AI Research', 'Video Production', 'AI Art', 'Music AI', 'ChatGPT', 'Midjourney', 'Claude', 'Suno AI'].map(tag => (
