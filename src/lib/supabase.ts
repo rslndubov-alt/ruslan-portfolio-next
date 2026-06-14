@@ -76,7 +76,39 @@ export async function getVideoUrls(): Promise<string[]> {
 }
 
 // ─── Bucket: "music" ──────────────────────────────────────────────────────────
-// AI-composed music tracks — shown on the Music page
+const AUDIO_RE = /\.(mp3|wav|ogg|flac|m4a)$/i;
+
+// Dynamically discover subfolders in the music bucket
+export async function getMusicFolders(): Promise<string[]> {
+  const { data, error } = await supabase.storage
+    .from('music')
+    .list('', { limit: 100, sortBy: { column: 'name', order: 'asc' } });
+  if (error || !data) return [];
+  return data
+    .filter(item => item.id === null || item.metadata === null)
+    .map(item => item.name)
+    .filter(name => !AUDIO_RE.test(name));
+}
+
+// Fetch music from a specific subfolder (or all)
+export async function getMusicByCategory(category: string): Promise<string[]> {
+  if (category === 'all' || category === '') {
+    return getMusicAllCategories();
+  }
+  return listUrls('music', category, AUDIO_RE, 100);
+}
+
+// Fetch ALL music from root + all discovered subfolders
+export async function getMusicAllCategories(): Promise<string[]> {
+  const folders = await getMusicFolders();
+  const allFolders = ['', ...folders];
+  const results = await Promise.all(
+    allFolders.map(f => listUrls('music', f, AUDIO_RE, 100))
+  );
+  return results.flat();
+}
+
+// Legacy: fetch root only
 export async function getMusicUrls(): Promise<string[]> {
-  return listUrls('music', '', /\.(mp3|wav|ogg|flac|m4a)$/i, 100);
+  return listUrls('music', '', AUDIO_RE, 100);
 }

@@ -1,36 +1,42 @@
 'use client';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useLang } from '@/lib/i18n';
-import { getMusicUrls, getArtsAllCategories } from '@/lib/supabase';
+import { getMusicByCategory, getMusicFolders, getArtsAllCategories } from '@/lib/supabase';
 import Hero from '@/components/Hero';
 
 export default function MusicPage() {
   const { t } = useLang();
   const [tracks, setTracks] = useState<string[]>([]);
   const [arts, setArts] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [activeCategory, setActiveCategory] = useState('all');
   const [playingIdx, setPlayingIdx] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
 
   useEffect(() => {
-    getMusicUrls().then(setTracks);
+    getMusicFolders().then(setCategories);
     getArtsAllCategories().then(setArts);
   }, []);
 
-  // Assign a stable random art to each track (seeded by track index)
+  useEffect(() => {
+    setLoading(true);
+    setPlayingIdx(null);
+    getMusicByCategory(activeCategory).then(urls => { setTracks(urls); setLoading(false); });
+  }, [activeCategory]);
+
   const trackArts = useMemo(() => {
     if (!arts.length) return [];
     return tracks.map((_, i) => arts[(i * 7 + 3) % arts.length]);
   }, [tracks, arts]);
 
-  // Random idle art (changes on page load)
   const idleArt = useMemo(() => {
     if (!arts.length) return '';
     return arts[Math.floor(Math.random() * arts.length)];
   }, [arts]);
 
   const currentArt = playingIdx !== null && trackArts[playingIdx]
-    ? trackArts[playingIdx]
-    : idleArt;
+    ? trackArts[playingIdx] : idleArt;
 
   const getName = (url: string) => {
     try {
@@ -40,6 +46,8 @@ export default function MusicPage() {
         .replace(/[-_]/g, ' ');
     } catch { return 'Track'; }
   };
+
+  const label = (cat: string) => cat.charAt(0).toUpperCase() + cat.slice(1);
 
   const handlePlay = (idx: number) => {
     audioRefs.current.forEach((audio, i) => {
@@ -57,6 +65,37 @@ export default function MusicPage() {
           {((t as (key: string) => string)('music_title')) || 'Music'}
         </h2>
 
+        {/* ── DYNAMIC FILTER BUTTONS ── */}
+        {categories.length > 0 && (
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
+            <button
+              onClick={() => setActiveCategory('all')}
+              style={{
+                padding: '8px 20px', borderRadius: '100px',
+                border: activeCategory === 'all' ? '1px solid rgba(255,255,255,0.35)' : '1px solid rgba(255,255,255,0.08)',
+                background: activeCategory === 'all' ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.03)',
+                color: activeCategory === 'all' ? '#fff' : 'rgba(255,255,255,0.4)',
+                fontSize: '0.8rem', fontWeight: activeCategory === 'all' ? 600 : 400,
+                cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit', letterSpacing: '0.3px',
+              }}
+            >All</button>
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                style={{
+                  padding: '8px 20px', borderRadius: '100px',
+                  border: activeCategory === cat ? '1px solid rgba(255,255,255,0.35)' : '1px solid rgba(255,255,255,0.08)',
+                  background: activeCategory === cat ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.03)',
+                  color: activeCategory === cat ? '#fff' : 'rgba(255,255,255,0.4)',
+                  fontSize: '0.8rem', fontWeight: activeCategory === cat ? 600 : 400,
+                  cursor: 'pointer', transition: 'all 0.2s', fontFamily: 'inherit', letterSpacing: '0.3px',
+                }}
+              >{label(cat)}</button>
+            ))}
+          </div>
+        )}
+
         {/* ── ART VISUALIZER ── */}
         {currentArt && (
           <div style={{
@@ -68,13 +107,11 @@ export default function MusicPage() {
             position: 'relative',
           }}>
             <img
-              src={currentArt}
-              alt="Now playing art"
+              src={currentArt} alt="Now playing art"
               onContextMenu={e => e.preventDefault()}
               style={{
                 maxWidth: '100%', maxHeight: '400px', objectFit: 'contain',
-                display: 'block',
-                transition: 'opacity 0.6s ease',
+                display: 'block', transition: 'opacity 0.6s ease',
                 opacity: playingIdx !== null ? 1 : 0.5,
               }}
             />
@@ -95,7 +132,9 @@ export default function MusicPage() {
         )}
 
         {/* ── TRACK LIST ── */}
-        {tracks.length > 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(255,255,255,0.2)', fontSize: '0.85rem' }}>Loading...</div>
+        ) : tracks.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {tracks.map((url, i) => (
               <div
@@ -104,16 +143,13 @@ export default function MusicPage() {
                   padding: '20px',
                   background: playingIdx === i ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
                   border: playingIdx === i ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: '14px',
-                  transition: 'all 0.2s',
+                  borderRadius: '14px', transition: 'all 0.2s',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
-                  {/* Track thumbnail from arts */}
                   <div style={{
                     width: '44px', height: '44px', borderRadius: '10px', overflow: 'hidden',
-                    flexShrink: 0, border: '1px solid rgba(255,255,255,0.08)',
-                    background: 'rgba(255,255,255,0.04)',
+                    flexShrink: 0, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.04)',
                   }}>
                     {trackArts[i] ? (
                       <img src={trackArts[i]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onContextMenu={e => e.preventDefault()} />
@@ -122,19 +158,13 @@ export default function MusicPage() {
                     )}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>
-                      {getName(url)}
-                    </div>
-                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)', marginTop: '2px' }}>
-                      AI · Suno · Ruslan Dubov
-                    </div>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>{getName(url)}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)', marginTop: '2px' }}>AI · Suno · Ruslan Dubov</div>
                   </div>
                 </div>
                 <audio
                   ref={el => { audioRefs.current[i] = el; }}
-                  src={url}
-                  controls
-                  controlsList="nodownload"
+                  src={url} controls controlsList="nodownload"
                   onContextMenu={e => e.preventDefault()}
                   onPlay={() => handlePlay(i)}
                   onPause={() => { if (playingIdx === i) setPlayingIdx(null); }}
