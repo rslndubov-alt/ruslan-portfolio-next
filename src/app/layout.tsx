@@ -2,12 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { I18nProvider } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
-import BeamsBackground from '@/components/BeamsBackground';
 import AiChatWidget from '@/components/AiChatWidget';
-import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: 'Ruslan Dubov — AI Content Creator',
@@ -16,10 +12,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans")}>
       <body>
         <I18nProvider>
-          <BeamsBackground />
           <div className="w-full max-w-[960px] mx-auto flex flex-col min-h-screen relative">
             <Navbar />
             <main className="w-full flex-1">{children}</main>
