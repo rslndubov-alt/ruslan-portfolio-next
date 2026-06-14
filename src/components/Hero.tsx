@@ -55,43 +55,64 @@ export default function Hero() {
               </span>
             ))}
           </div>
-          <div className="hero-resume-btn" style={{ marginTop: '16px' }}>
-            <a
-              href="/Ruslan_Dubov_Resume.pdf"
-              download
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '6px',
-                padding: '7px 18px',
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                borderRadius: '100px',
-                fontSize: '0.75rem',
-                color: 'rgba(255,255,255,0.5)',
-                fontWeight: 500,
-                letterSpacing: '0.3px',
-                textDecoration: 'none',
-                transition: 'all 0.2s',
-                cursor: 'pointer',
-              }}
-            >
-              ↓ Download Resume
-            </a>
+          <div className="hero-socials">
+            <a href="https://t.me/ruslandubov" target="_blank" rel="noreferrer" style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '5px 14px', background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
+              fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'all 0.2s'
+            }}>Telegram</a>
+            <a href="https://instagram.com/ruslandubov" target="_blank" rel="noreferrer" style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '5px 14px', background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
+              fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'all 0.2s'
+            }}>Instagram</a>
+            <a href="https://youtube.com/@ruslandubov" target="_blank" rel="noreferrer" style={{
+              display: 'inline-flex', alignItems: 'center',
+              padding: '5px 14px', background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
+              fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'all 0.2s'
+            }}>YouTube</a>
           </div>
         </div>
       </div>
 
-      {/* Avatar */}
-      <div className="hero-avatar">
-        <div style={{
-          width: '100%',
-          height: '100%',
-          borderRadius: '50%',
-          overflow: 'hidden',
-          background: '#1a1a1a',
-        }}>
-          <Image src="/photo.jpg" alt="Ruslan Dubov" width={155} height={155}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+      {/* Right Column (Avatar + Resume) */}
+      <div className="hero-right-col">
+        <div className="hero-avatar">
+          <div style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            background: '#1a1a1a',
+          }}>
+            <Image src="/photo.jpg" alt="Ruslan Dubov" width={155} height={155}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} priority />
+          </div>
         </div>
+
+        <a
+          href="/Ruslan_Dubov_Resume.pdf"
+          download
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: '6px',
+            padding: '7px 18px',
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '100px',
+            fontSize: '0.75rem',
+            color: 'rgba(255,255,255,0.6)',
+            fontWeight: 500,
+            letterSpacing: '0.3px',
+            textDecoration: 'none',
+            transition: 'all 0.2s',
+            cursor: 'pointer',
+          }}
+        >
+          ↓ Download Resume
+        </a>
       </div>
     </section>
   );
