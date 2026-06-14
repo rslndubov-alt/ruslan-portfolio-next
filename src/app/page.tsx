@@ -76,7 +76,22 @@ export default function AboutPage() {
 
       {/* ── LOGO ── */}
       <section style={{ marginTop: '48px', textAlign: 'center', paddingBottom: '48px' }}>
-        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2.5rem', fontWeight: 800, color: '#fff', letterSpacing: '2px', textTransform: 'uppercase' }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          .footer-shimmer {
+            background: linear-gradient(
+              110deg,
+              #ffffff 30%,
+              rgba(255, 255, 255, 0.4) 50%,
+              #ffffff 70%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
+          }
+        `}} />
+        <h2 className="footer-shimmer" style={{ fontFamily: 'Impact, "Arial Black", sans-serif', fontSize: '3rem', fontWeight: 900, letterSpacing: '3px', textTransform: 'uppercase' }}>
           RD AI PRODUCTION
         </h2>
       </section>
