@@ -1,107 +1,99 @@
 'use client';
-import Hero from '@/components/Hero';
+import { useState, useEffect, useRef } from 'react';
 import { useLang } from '@/lib/i18n';
-
-const tracks = [
-  { name: 'Subharmonic Stillness', file: '/music/Subharmonic_Stillness.mp3' },
-  { name: 'Vinyl Sorrow Jazz', file: '/music/Vinyl_Sorrow_Jazz.mp3' },
-  { name: 'Vitamin D Holiday', file: '/music/Vitamin_D_Holiday.mp3' },
-];
+import { getMusicUrls } from '@/lib/supabase';
+import Hero from '@/components/Hero';
 
 export default function MusicPage() {
   const { t } = useLang();
+  const [tracks, setTracks] = useState<string[]>([]);
+  const [playingIdx, setPlayingIdx] = useState<number | null>(null);
+  const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
+
+  useEffect(() => {
+    getMusicUrls().then(setTracks);
+  }, []);
+
+  const getName = (url: string) => {
+    try {
+      const parts = url.split('/');
+      return decodeURIComponent(parts[parts.length - 1])
+        .replace(/\.[^.]+$/, '')
+        .replace(/[-_]/g, ' ');
+    } catch { return 'Track'; }
+  };
+
+  const handlePlay = (idx: number) => {
+    // Pause all other tracks
+    audioRefs.current.forEach((audio, i) => {
+      if (audio && i !== idx) {
+        audio.pause();
+      }
+    });
+    setPlayingIdx(idx);
+  };
 
   return (
     <div style={{ paddingTop: '28px' }}>
       <Hero />
 
       <section style={{ marginTop: '32px', paddingBottom: '48px' }}>
-        <h2
-          style={{
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            fontSize: '2rem',
-            fontWeight: 600,
-            color: '#fff',
-            marginBottom: '28px',
-            letterSpacing: '0.5px',
-            textAlign: 'center',
-          }}
-        >
-          {(t as (key: string) => string)('music_title') || 'Music'}
+        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2rem', fontWeight: 600, color: '#fff', marginBottom: '28px', letterSpacing: '0.5px', textAlign: 'center' }}>
+          {((t as (key: string) => string)('music_title')) || 'Music'}
         </h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {tracks.map((track, i) => (
-            <div
-              key={track.file}
-              style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: '14px',
-                padding: '20px',
-                transition: 'border-color 0.3s ease',
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.12)';
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.06)';
-              }}
-            >
-              {/* Track number */}
+        {tracks.length > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {tracks.map((url, i) => (
               <div
+                key={url + i}
                 style={{
-                  fontSize: '0.68rem',
-                  color: 'rgba(255,255,255,0.22)',
-                  fontWeight: 500,
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase' as const,
-                  marginBottom: '6px',
+                  padding: '20px',
+                  background: playingIdx === i ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+                  border: playingIdx === i ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(255,255,255,0.06)',
+                  borderRadius: '14px',
+                  transition: 'all 0.2s',
                 }}
               >
-                Track {String(i + 1).padStart(2, '0')}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
+                  <div style={{
+                    width: '36px', height: '36px', borderRadius: '50%',
+                    background: playingIdx === i ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '12px', color: 'rgba(255,255,255,0.4)', fontWeight: 600,
+                  }}>
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>
+                      {getName(url)}
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.25)', marginTop: '2px' }}>
+                      AI · Suno · Ruslan Dubov
+                    </div>
+                  </div>
+                </div>
+                <audio
+                  ref={el => { audioRefs.current[i] = el; }}
+                  src={url}
+                  controls
+                  controlsList="nodownload"
+                  onPlay={() => handlePlay(i)}
+                  onPause={() => { if (playingIdx === i) setPlayingIdx(null); }}
+                  style={{ width: '100%', height: '36px', borderRadius: '8px' }}
+                />
               </div>
-
-              {/* Track name */}
-              <div
-                style={{
-                  fontSize: '1.05rem',
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.85)',
-                  marginBottom: '14px',
-                  letterSpacing: '0.2px',
-                }}
-              >
-                {track.name}
-              </div>
-
-              {/* Audio player */}
-              <audio
-                controls
-                preload="metadata"
-                src={track.file}
-                style={{
-                  width: '100%',
-                  height: '40px',
-                  borderRadius: '8px',
-                  outline: 'none',
-                }}
-              />
-
-              {/* Subtitle */}
-              <div
-                style={{
-                  fontSize: '0.7rem',
-                  color: 'rgba(255,255,255,0.28)',
-                  marginTop: '10px',
-                  letterSpacing: '0.3px',
-                }}
-              >
-                AI · Suno
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{
+            padding: '60px 0', textAlign: 'center',
+            color: 'rgba(255,255,255,0.25)', fontSize: '0.85rem',
+          }}>
+            🎵 Upload music to Supabase &quot;music&quot; bucket
+          </div>
+        )}
       </section>
     </div>
   );
