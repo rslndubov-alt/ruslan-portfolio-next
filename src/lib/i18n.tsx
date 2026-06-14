@@ -25,7 +25,7 @@ export const translations = {
     bio1: "My name is <strong>Ruslan Dubov</strong>. I am an AI creator, prompt engineer, and neural network researcher working at the intersection of technology, visual art, and mindful living. I don't just generate content; I explore the limits of AI capabilities, creating videos, artworks, and music that tell stories without unnecessary words.",
     bio2: "My core stack: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong>. With a deep understanding of LLM architecture and diffusion models, I develop complex, structured prompts, turning abstract ideas into finished commercial products faster and more accurately than ever before.",
     contact_bio1: "Based in Dnipro, Ukraine. 47 years old. I work fully remotely with projects and clients worldwide.",
-    contact_bio2: "Available 24/7. Ready to discuss your project, consult on AI integration, or propose creative solutions for your business.",
+    contact_bio2: "I guarantee integrity and strict adherence to deadlines. Available for both long-term collaborations and one-time projects. All details, including pricing and workflow, are discussed in personal communication.",
   },
   uk: {
     nav_about: 'Про мене', nav_arts: 'Арти', nav_video: 'Відео', nav_music: 'Музика', nav_contact: 'Контакти',
@@ -48,7 +48,7 @@ export const translations = {
     bio1: "Мене звати <strong>Руслан Дубов</strong>. Я — AI-креатор, промпт-інженер та дослідник нейромереж, який працює на перетині технологій, візуального мистецтва та усвідомленого підходу до життя. Я не просто генерую контент, я досліджую межі можливостей ШІ, створюючи відео, арты та музику, які розповідають історії без зайвих слів.",
     bio2: "Мій основний стек: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong>. Завдяки глибокому розумінню архітектури LLM та дифузійних моделей, я розробляю складні структуровані промпти, перетворюючи абстрактні ідеї на готовий комерційний продукт швидше і точніше, ніж будь-коли.",
     contact_bio1: "Живу в Україні, місто Дніпро. Мені 47 років. Працюю повністю віддалено з проєктами та клієнтами по всьому світу.",
-    contact_bio2: "Завжди на зв'язку (24/7). Готовий обговорити ваш проєкт, проконсультувати щодо впровадження ШІ або запропонувати креативне рішення для вашого бізнесу.",
+    contact_bio2: "Гарантую порядність та суворе дотримання термінів. Готовий до співпраці як на постійній основі, так і під разові проєкти. Всі деталі обговорюються в особистому спілкуванні.",
   },
   ru: {
     nav_about: 'Обо мне', nav_arts: 'Арты', nav_video: 'Видео', nav_music: 'Музыка', nav_contact: 'Контакты',
@@ -71,7 +71,7 @@ export const translations = {
     bio1: 'Меня зовут <strong>Руслан Дубов</strong>. Я — AI-креатор, промпт-инженер и исследователь нейросетей, работающий на стыке технологий, визуального искусства и осознанного подхода к жизни. Я не просто генерирую контент, я исследую пределы возможностей ИИ, создавая видео, арты и музыку, которые рассказывают истории без лишних слов.',
     bio2: 'Мой основной стек: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong>. Благодаря глубокому пониманию архитектуры LLM и диффузионных моделей, я разрабатываю сложные структурированные промпты, превращая абстрактные идеи в готовый коммерческий продукт быстрее и точнее, чем когда-либо.',
     contact_bio1: 'Живу в Украине, город Днепр. Мне 47 лет. Работаю полностью удаленно с проектами и клиентами по всему миру.',
-    contact_bio2: 'Всегда на связи (24/7). Готов обсудить ваш проект, проконсультировать по внедрению ИИ или предложить креативное решение для вашего бизнеса.',
+    contact_bio2: 'Гарантирую порядочность и строгое соблюдение сроков. Готов к сотрудничеству как на постоянной основе, так и под разовые проекты. Все подробности обсуждаются в личном общении.',
   },
 };
 
