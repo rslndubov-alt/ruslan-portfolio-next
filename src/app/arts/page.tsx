@@ -35,9 +35,12 @@ export default function ArtsPage() {
       <Hero />
 
       <section style={{ marginTop: '32px', paddingBottom: '48px' }}>
-        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2rem', fontWeight: 600, color: '#fff', marginBottom: '20px', letterSpacing: '0.5px', textAlign: 'center' }}>
+        <h2 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '2rem', fontWeight: 600, color: '#fff', marginBottom: '16px', letterSpacing: '0.5px', textAlign: 'center' }}>
           {t('arts_title')}
         </h2>
+        <p style={{ maxWidth: '800px', margin: '0 auto 32px auto', textAlign: 'center', fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, fontWeight: 300 }}>
+          {t('arts_desc')}
+        </p>
 
         {/* ── DYNAMIC FILTER BUTTONS ── */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
