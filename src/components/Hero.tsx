@@ -2,6 +2,8 @@
 import { useLang } from '@/lib/i18n';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { getAvatarUrl } from '@/lib/supabase';
 
 export default function Hero() {
   const { t } = useLang();
@@ -20,6 +22,14 @@ export default function Hero() {
   } else if (pathname === '/music') {
     secondBlockKey = 'music_desc';
   }
+
+  const [avatarUrl, setAvatarUrl] = useState('/photo.jpg');
+
+  useEffect(() => {
+    getAvatarUrl().then(url => {
+      if (url) setAvatarUrl(url);
+    });
+  }, []);
 
   return (
     <section className="hero-container">
@@ -82,8 +92,8 @@ export default function Hero() {
             overflow: 'hidden',
             background: '#1a1a1a',
           }}>
-            <Image src="/photo.jpg" alt="Ruslan Dubov" width={155} height={155}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} priority />
+            <img src={avatarUrl} alt="Ruslan Dubov" width={155} height={155}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
           </div>
         </div>
 
