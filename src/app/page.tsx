@@ -6,13 +6,17 @@ import Hero from '@/components/Hero';
 import { Play } from 'lucide-react';
 
 export default function AboutPage() {
-  const { t } = useLang();
+  const { lang, t } = useLang();
   const [videos, setVideos] = useState<string[]>([]);
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
-    getResumeVideoUrls().then(setVideos);
-  }, []);
+    const folderName = lang === 'uk' ? 'ua' : lang;
+    getResumeVideoUrls(folderName).then(urls => {
+      setVideos(urls);
+      setActiveIdx(0);
+    });
+  }, [lang]);
 
   const getName = (url: string) => {
     try {

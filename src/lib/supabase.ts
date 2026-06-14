@@ -26,8 +26,8 @@ async function listUrls(
 
 // ─── Bucket: "resume" ─────────────────────────────────────────────────────────
 // Short videos about Ruslan — shown on the home / About page
-export async function getResumeVideoUrls(): Promise<string[]> {
-  return listUrls('resume', '', /\.(mp4|webm|mov|avi)$/i, 20);
+export async function getResumeVideoUrls(langFolder: string = ''): Promise<string[]> {
+  return listUrls('resume', langFolder, /\.(mp4|webm|mov|avi)$/i, 20);
 }
 
 // ─── Bucket: "arts" ───────────────────────────────────────────────────────────
