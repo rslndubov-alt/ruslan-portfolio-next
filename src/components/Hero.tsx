@@ -61,6 +61,19 @@ export default function Hero() {
               blurIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
               shine 6s linear infinite;
           }
+          .shimmer-text-subtle {
+            background: linear-gradient(
+              110deg,
+              rgba(255, 255, 255, 0.4) 30%,
+              rgba(255, 255, 255, 0.9) 50%,
+              rgba(255, 255, 255, 0.4) 70%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 8s linear infinite;
+          }
         `}} />
         <h1 className="modern-text-effect" style={{
           fontFamily: 'Arial, Helvetica, sans-serif',
@@ -75,9 +88,8 @@ export default function Hero() {
 
       {/* Bio */}
       <div className="hero-bio">
-        <div style={{
+        <div className="shimmer-text-subtle" style={{
           fontSize: '0.88rem',
-          color: 'rgba(255,255,255,0.4)',
           lineHeight: 1.85,
           fontWeight: 300,
         }}>
