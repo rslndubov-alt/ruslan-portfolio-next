@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ruslan Dubov — Resume</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0d0d0d;
+    color: #fff;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 40px 50px;
+    line-height: 1.5;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 6px;
+    letter-spacing: 0.3px;
+  }
+  .contact-info {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    line-height: 2;
+  }
+  .contact-info a { color: rgba(255,255,255,0.65); text-decoration: none; }
+  h2 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 14px;
+    margin-top: 24px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .section { margin-bottom: 20px; }
+  .bio {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+  }
+  .bio strong { color: rgba(255,255,255,0.85); }
+  .tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .tag {
+    padding: 3px 12px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.3px;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .skill-block h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 8px;
+  }
+  .skill-block ul {
+    list-style: none;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.9;
+  }
+  .skill-block ul li::before {
+    content: "• ";
+    color: rgba(255,255,255,0.25);
+  }
+  .exp-item { margin-bottom: 16px; }
+  .exp-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+  }
+  .exp-period {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 6px;
+  }
+  .exp-list {
+    list-style: none;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.9;
+  }
+  .exp-list li::before {
+    content: "→ ";
+    color: rgba(255,255,255,0.2);
+  }
+  .langs {
+    display: flex;
+    gap: 32px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+  .langs strong { color: rgba(255,255,255,0.7); }
+  .footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>Ruslan Dubov</h1>
+      <div class="subtitle">AI Content Creator · Visual Artist</div>
+    </div>
+    <div class="contact-info">
+      <a href="mailto:rslndubov@gmail.com">rslndubov@gmail.com</a><br>
+      <a href="https://t.me/Dubovruslan">Telegram: @Dubovruslan</a><br>
+      <a href="https://www.tiktok.com/@ruslan.dubov">TikTok: @ruslan.dubov</a><br>
+      <a href="https://www.facebook.com/rslndubov">Facebook: rslndubov</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="bio">
+      Content creator at the intersection of <strong>AI, visual art, and mindful living</strong>. 
+      I create videos, AI artworks, and music that tell stories without unnecessary words.<br><br>
+      I work with: <strong>ChatGPT, Midjourney, Claude, Suno, Google AI</strong> — turning ideas into a finished product faster than ever.
+    </div>
+    <div class="tags">
+      <span class="tag">AI Content</span>
+      <span class="tag">Video Production</span>
+      <span class="tag">AI Art</span>
+      <span class="tag">Music AI</span>
+      <span class="tag">Storytelling</span>
+    </div>
+  </div>
+
+  <h2>Skills & Expertise</h2>
+  <div class="section skills-grid">
+    <div class="skill-block">
+      <h3>AI & Content Creation</h3>
+      <ul>
+        <li>AI video production (Veo, Seedance, CapCut)</li>
+        <li>AI art (Midjourney, ChatGPT Image, DALL·E)</li>
+        <li>AI music composition (Suno)</li>
+        <li>Prompt engineering (text, image, video, music)</li>
+        <li>Content strategy & storytelling</li>
+      </ul>
+    </div>
+    <div class="skill-block">
+      <h3>Tools & Software</h3>
+      <ul>
+        <li>ChatGPT, Claude, Gemini — text & strategy</li>
+        <li>Midjourney, DALL·E — visual art</li>
+        <li>Suno — AI music</li>
+        <li>Google AI (Veo, Gemini) — video</li>
+        <li>Adobe Photoshop, Illustrator</li>
+        <li>CapCut — video editing</li>
+        <li>Next.js, React, Supabase, Vercel</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Experience</h2>
+  <div class="section">
+    <div class="exp-item">
+      <div class="exp-title">Freelance AI Content Creator</div>
+      <div class="exp-period">2024 – Present</div>
+      <ul class="exp-list">
+        <li>AI-powered video content for social media platforms</li>
+        <li>AI art collections (Midjourney, ChatGPT Image)</li>
+        <li>AI-composed music tracks with Suno</li>
+        <li>Portfolio built with Next.js + Supabase</li>
+        <li>Multi-platform distribution (TikTok, Facebook)</li>
+      </ul>
+    </div>
+    <div class="exp-item">
+      <div class="exp-title">Content & Visual Production</div>
+      <div class="exp-period">2020 – 2024</div>
+      <ul class="exp-list">
+        <li>Video production and post-production</li>
+        <li>Visual content design for brands</li>
+        <li>Photography and image editing</li>
+        <li>Social media management and growth</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Languages</h2>
+  <div class="section langs">
+    <div><strong>English</strong> — Professional</div>
+    <div><strong>Ukrainian</strong> — Native</div>
+    <div><strong>Russian</strong> — Native</div>
+  </div>
+
+  <div class="footer">
+    © 2026 · Ruslan Dubov · AI. Art. Portfolio: resume-nine-psi-95.vercel.app
+  </div>
+</body>
+</html>

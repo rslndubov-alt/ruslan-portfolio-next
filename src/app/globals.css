@@ -53,8 +53,12 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-user-select: none;
+  user-select: none;
 }
 a { text-decoration: none; color: inherit; }
+input, textarea { -webkit-user-select: text; user-select: text; }
+img, video { -webkit-user-drag: none; pointer-events: auto; }
 
 /* ── Site Container (explicit centering) ── */
 .site-container {

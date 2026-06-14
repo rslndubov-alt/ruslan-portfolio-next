@@ -30,7 +30,7 @@ export default function AboutPage() {
       {/* ── DOWNLOAD RESUME ── */}
       <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
         <a
-          href="/Ruslan_Dubov_Resume.txt"
+          href="/Ruslan_Dubov_Resume.pdf"
           download
           style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',

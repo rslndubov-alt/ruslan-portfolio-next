@@ -37,17 +37,18 @@ export default function Hero() {
         }}>
           <p dangerouslySetInnerHTML={{ __html: t('bio1') }} />
           <p style={{ marginTop: '10px' }} dangerouslySetInnerHTML={{ __html: t('bio2') }} />
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '14px' }}>
+          <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '5px', marginTop: '14px' }}>
             {['AI Content', 'Video Production', 'AI Art', 'Music AI', 'Storytelling'].map(tag => (
               <span key={tag} style={{
-                padding: '4px 13px',
-                background: '#fff',
-                border: 'none',
+                padding: '3px 10px',
+                background: 'rgba(255,255,255,0.15)',
+                border: '1px solid rgba(255,255,255,0.12)',
                 borderRadius: '100px',
-                fontSize: '0.72rem',
-                color: '#111',
+                fontSize: '0.68rem',
+                color: 'rgba(255,255,255,0.55)',
                 fontWeight: 500,
                 letterSpacing: '0.2px',
+                whiteSpace: 'nowrap',
               }}>
                 {tag}
               </span>

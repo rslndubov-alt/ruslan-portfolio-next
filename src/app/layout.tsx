@@ -4,6 +4,7 @@ import { I18nProvider } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import BeamsBackground from '@/components/BeamsBackground';
 import AiChatWidget from '@/components/AiChatWidget';
+import ContentProtection from '@/components/ContentProtection';
 
 export const metadata: Metadata = {
   title: 'Ruslan Dubov — AI Content Creator',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <I18nProvider>
+          <ContentProtection />
           <BeamsBackground />
           <div className="site-container">
             <Navbar />
