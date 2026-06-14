@@ -7,10 +7,19 @@ export default function Hero() {
   const { t } = useLang();
   const pathname = usePathname();
 
+  let firstBlockKey = 'bio1';
   let secondBlockKey = 'bio2';
-  if (pathname === '/arts') secondBlockKey = 'arts_desc';
-  else if (pathname === '/video') secondBlockKey = 'video_desc';
-  else if (pathname === '/music') secondBlockKey = 'music_desc';
+
+  if (pathname === '/contact') {
+    firstBlockKey = 'contact_bio1';
+    secondBlockKey = 'contact_bio2';
+  } else if (pathname === '/arts') {
+    secondBlockKey = 'arts_desc';
+  } else if (pathname === '/video') {
+    secondBlockKey = 'video_desc';
+  } else if (pathname === '/music') {
+    secondBlockKey = 'music_desc';
+  }
 
   return (
     <section className="hero-container">
@@ -36,45 +45,41 @@ export default function Hero() {
           lineHeight: 1.85,
           fontWeight: 300,
         }}>
-          <p dangerouslySetInnerHTML={{ __html: t('bio1') }} />
+          <p dangerouslySetInnerHTML={{ __html: t(firstBlockKey as any) || t('bio1') }} />
           <p style={{ marginTop: '10px' }} dangerouslySetInnerHTML={{ __html: t(secondBlockKey as any) || t('bio2') }} />
-          <div className="hero-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '14px' }}>
-            {['AI Content', 'Prompt Engineering', 'AI Research', 'Video Production', 'AI Art', 'Music AI'].map(tag => (
-              <span key={tag} style={{
-                padding: '3px 10px',
-                background: 'rgba(255,255,255,0.15)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                borderRadius: '100px',
-                fontSize: '0.68rem',
-                color: 'rgba(255,255,255,0.55)',
-                fontWeight: 500,
-                letterSpacing: '0.2px',
-                whiteSpace: 'nowrap',
-              }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-          <div className="hero-socials">
-            <a href="https://t.me/ruslandubov" target="_blank" rel="noreferrer" style={{
-              display: 'inline-flex', alignItems: 'center',
-              padding: '5px 14px', background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
-              fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'all 0.2s'
-            }}>Telegram</a>
-            <a href="https://instagram.com/ruslandubov" target="_blank" rel="noreferrer" style={{
-              display: 'inline-flex', alignItems: 'center',
-              padding: '5px 14px', background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
-              fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'all 0.2s'
-            }}>Instagram</a>
-            <a href="https://youtube.com/@ruslandubov" target="_blank" rel="noreferrer" style={{
-              display: 'inline-flex', alignItems: 'center',
-              padding: '5px 14px', background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
-              fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', textDecoration: 'none', transition: 'all 0.2s'
-            }}>YouTube</a>
-          </div>
+          
+          {pathname !== '/contact' && (
+            <>
+              <div className="hero-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '14px' }}>
+                {['AI Content', 'Prompt Engineering', 'AI Research', 'Video Production', 'AI Art', 'Music AI'].map(tag => (
+                  <span key={tag} style={{
+                    padding: '3px 10px',
+                    background: 'rgba(255,255,255,0.15)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: '100px',
+                    fontSize: '0.68rem',
+                    color: 'rgba(255,255,255,0.55)',
+                    fontWeight: 500,
+                    letterSpacing: '0.2px',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="hero-socials" style={{ marginTop: '12px' }}>
+                {['ChatGPT', 'Midjourney', 'Claude', 'Suno AI', 'Google AI'].map(tool => (
+                  <span key={tool} style={{
+                    display: 'inline-flex', alignItems: 'center',
+                    padding: '4px 12px', background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.08)', borderRadius: '100px',
+                    fontSize: '0.68rem', color: 'rgba(255,255,255,0.7)', fontWeight: 400,
+                    marginRight: '5px'
+                  }}>{tool}</span>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
