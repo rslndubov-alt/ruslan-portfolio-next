@@ -21,15 +21,8 @@ export default function Navbar() {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '16px', paddingLeft: '16px', paddingRight: '16px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div>
-          <Link href="/">
-            <img src="/logo.png" alt="RD AI Production" style={{ height: '32px', opacity: 0.9 }} />
-          </Link>
-        </div>
-        <div>
-          <LangSwitcher />
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '16px', paddingRight: '16px', maxWidth: '1200px', margin: '0 auto' }}>
+        <LangSwitcher />
       </div>
       <nav style={{ display: 'flex', justifyContent: 'center', paddingTop: '12px' }}>
         <div className="nav-pill">
