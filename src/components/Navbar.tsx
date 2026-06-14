@@ -20,20 +20,16 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="flex justify-end px-8 pt-4">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: '16px' }}>
         <LangSwitcher />
       </div>
-      <nav className="flex justify-center px-5 pt-3">
-        <div className="flex items-center bg-white/[0.07] border border-white/10 rounded-full px-2 py-1.5 gap-0.5">
+      <nav style={{ display: 'flex', justifyContent: 'center', paddingTop: '12px' }}>
+        <div className="nav-pill">
           {links.map(({ href, key }) => (
             <Link
               key={href}
               href={href}
-              className={`px-5 py-2 rounded-full text-sm font-normal transition-all duration-200 ${
-                isActive(href)
-                  ? 'bg-white/[0.12] text-white'
-                  : 'text-white/50 hover:text-white hover:bg-white/[0.06]'
-              }`}
+              className={isActive(href) ? 'active' : ''}
             >
               {t(key)}
             </Link>

@@ -56,6 +56,74 @@ body {
 }
 a { text-decoration: none; color: inherit; }
 
+/* ── Site Container (explicit centering) ── */
+.site-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+}
+
+/* ── Navbar pill ── */
+.nav-pill {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 8px;
+  gap: 2px;
+}
+.nav-pill a {
+  padding: 8px 22px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  color: rgba(255,255,255,0.5);
+  transition: all 0.2s;
+}
+.nav-pill a:hover,
+.nav-pill a.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+/* ── Lang switcher ── */
+.lang-switcher {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  padding: 4px;
+}
+.lang-btn {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  border: none;
+  background: none;
+}
+.lang-btn:hover { color: rgba(255,255,255,0.6); }
+.lang-btn.active { background: rgba(255,255,255,0.12); color: #fff; }
+
+/* ── Scrollbar hide ── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Font-serif mapping ── */
+.font-serif { font-family: var(--font-serif) !important; }
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
