@@ -26,7 +26,7 @@ export default function Hero() {
     secondBlockKey = null;
   }
 
-  const [avatarUrl, setAvatarUrl] = useState('/photo.jpg');
+  const [avatarUrl, setAvatarUrl] = useState('');
 
   useEffect(() => {
     getAvatarUrl().then(url => {
@@ -148,8 +148,8 @@ export default function Hero() {
             overflow: 'hidden',
             background: '#1a1a1a',
           }}>
-            <img src={avatarUrl} alt="Ruslan Dubov" width={155} height={155}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />
+            {avatarUrl && <img src={avatarUrl} alt="Ruslan Dubov" width={155} height={155}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />}
           </div>
         </div>
 
