@@ -27,7 +27,19 @@ export default function MusicPage() {
 
   const trackArts = useMemo(() => {
     if (!arts.length) return [];
-    return tracks.map((_, i) => arts[(i * 7 + 3) % arts.length]);
+    // Shuffle arts with seeded distribution to give each track a unique art
+    const shuffled = [...arts].sort((a, b) => a.localeCompare(b));
+    const used = new Set<number>();
+    return tracks.map((_, i) => {
+      // Find next unused art, cycling through if needed
+      let idx = (i * 13 + 5) % shuffled.length;
+      while (used.has(idx) && used.size < shuffled.length) {
+        idx = (idx + 1) % shuffled.length;
+      }
+      used.add(idx);
+      if (used.size >= shuffled.length) used.clear();
+      return shuffled[idx];
+    });
   }, [tracks, arts]);
 
   const idleArt = useMemo(() => {
@@ -110,8 +122,8 @@ export default function MusicPage() {
               src={currentArt} alt="Now playing art"
               onContextMenu={e => e.preventDefault()}
               style={{
-                width: '100%', height: '100%', objectFit: 'cover',
-                display: 'block',
+                maxWidth: '100%', maxHeight: '100%', objectFit: 'contain',
+                display: 'block', margin: '0 auto',
                 opacity: playingIdx !== null ? 1 : 0.4,
                 transition: 'opacity 0.8s ease',
                 animation: playingIdx !== null ? 'kenburns 20s ease-in-out infinite alternate' : 'none',
