@@ -184,37 +184,38 @@ export default function MusicPage() {
         {loading ? (
           <div style={{ textAlign: 'center', padding: '60px 0', color: 'rgba(255,255,255,0.2)', fontSize: '0.85rem' }}>Loading...</div>
         ) : tracks.length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px' }}>
             {tracks.map((url, i) => (
               <div
                 key={url + i}
                 style={{
-                  padding: '20px',
-                  background: playingIdx === i ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
-                  border: playingIdx === i ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: '14px', transition: 'all 0.2s',
+                  padding: '16px',
+                  background: playingIdx === i ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+                  border: playingIdx === i ? '1px solid rgba(255,255,255,0.15)' : '1px solid rgba(255,255,255,0.05)',
+                  borderRadius: '16px', transition: 'all 0.2s',
+                  display: 'flex', flexDirection: 'column', gap: '12px'
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                   <div style={{
-                    width: '44px', height: '44px', borderRadius: '10px', overflow: 'hidden',
+                    width: '56px', height: '56px', borderRadius: '10px', overflow: 'hidden',
                     flexShrink: 0, border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.04)',
                   }}>
                     {trackArts[i] ? (
                       <img src={trackArts[i]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onContextMenu={e => e.preventDefault()} />
                     ) : (
-                      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', color: 'rgba(255,255,255,0.2)' }}>🎵</div>
+                      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', color: 'rgba(255,255,255,0.2)' }}>🎵</div>
                     )}
                   </div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     {(() => {
                       const meta = getMeta(url, lang);
                       const title = meta?.title || getName(url);
                       const desc = meta?.desc;
                       return (
                         <>
-                          <div style={{ fontSize: '0.95rem', fontWeight: 500, color: 'rgba(255,255,255,0.75)' }}>{title}</div>
-                          <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px', lineHeight: 1.3 }}>
+                          <div style={{ fontSize: '0.95rem', fontWeight: 600, color: 'rgba(255,255,255,0.85)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{title}</div>
+                          <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', marginTop: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {desc || 'AI · Suno · Ruslan Dubov'}
                           </div>
                         </>
@@ -223,12 +224,13 @@ export default function MusicPage() {
                   </div>
                 </div>
                 <audio
+                  className="custom-audio-player"
                   ref={el => { audioRefs.current[i] = el; }}
                   src={url} controls controlsList="nodownload"
                   onContextMenu={e => e.preventDefault()}
                   onPlay={() => handlePlay(i)}
                   onPause={() => { if (playingIdx === i) setPlayingIdx(null); }}
-                  style={{ width: '100%', height: '36px', borderRadius: '8px' }}
+                  style={{ width: '100%', height: '36px', outline: 'none' }}
                 />
               </div>
             ))}
@@ -258,6 +260,23 @@ export default function MusicPage() {
           100% {
             transform: scale(1.15) translate(-0.5%, 0.5%);
           }
+        }
+        
+        /* Dark Theme for native HTML5 audio players (Chrome/Safari) */
+        .custom-audio-player::-webkit-media-controls-panel {
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+        .custom-audio-player::-webkit-media-controls-play-button,
+        .custom-audio-player::-webkit-media-controls-mute-button {
+          filter: invert(1);
+        }
+        .custom-audio-player::-webkit-media-controls-current-time-display,
+        .custom-audio-player::-webkit-media-controls-time-remaining-display {
+          color: rgba(255, 255, 255, 0.8);
+          text-shadow: none;
+        }
+        .custom-audio-player::-webkit-media-controls-timeline {
+          filter: brightness(0.8) contrast(1.2);
         }
       `}</style>
     </div>
