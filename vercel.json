@@ -6,7 +6,7 @@
   "crons": [
     {
       "path": "/api/cron/auto-tag",
-      "schedule": "0 8,16,0 * * *"
+      "schedule": "0 4 * * *"
     }
   ]
 }
