@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabase as publicSupabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Mark route as dynamic to prevent static generation
@@ -24,7 +25,8 @@ export async function GET(request: Request) {
     // 2. Fetch all public URLs from `arts` bucket
     // For simplicity we check root bucket here. If you have subfolders, 
     // we would use the getArtsFolders() logic.
-    const { data: files, error: filesError } = await supabase.storage
+    // 2. Fetch all public URLs from `arts` bucket using public client
+    const { data: files, error: filesError } = await publicSupabase.storage
       .from('arts')
       .list('', { limit: 100, sortBy: { column: 'created_at', order: 'desc' } });
 
@@ -41,7 +43,7 @@ export async function GET(request: Request) {
     }
 
     // 3. Fetch existing metadata from the database
-    const { data: metaData, error: metaError } = await supabase
+    const { data: metaData, error: metaError } = await publicSupabase
       .from('media_meta')
       .select('file_name');
 
@@ -64,11 +66,11 @@ export async function GET(request: Request) {
 
     // 5. Initialize Gemini
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     for (const file of batchToProcess) {
       // Get the public URL to download the image data
-      const publicUrl = supabase.storage.from('arts').getPublicUrl(file.name).data.publicUrl;
+      const publicUrl = publicSupabase.storage.from('arts').getPublicUrl(file.name).data.publicUrl;
       
       // Fetch the image as arrayBuffer
       const imgRes = await fetch(publicUrl);
@@ -113,7 +115,13 @@ Output only JSON.`;
           desc_ru: aiData.desc_ru,
         };
 
-        const { error: insertError } = await supabase
+        // Initialize admin client to bypass RLS for insertion
+        const adminSupabase = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY! || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
+
+        const { error: insertError } = await adminSupabase
           .from('media_meta')
           .insert(insertData);
 
