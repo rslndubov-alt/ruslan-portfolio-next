@@ -124,7 +124,7 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // Parse action blocks from Gemini response
 function parseResponse(raw: string): { text: string; actions: any[] } {
   const actions: any[] = [];
-  const text = raw.replace(/:::ACTION:::(.*?):::END:::/gs, (_, json) => {
+  const text = raw.replace(/:::ACTION:::([\s\S]*?):::END:::/g, (_, json) => {
     try { actions.push(JSON.parse(json.trim())); } catch {}
     return '';
   }).trim();
