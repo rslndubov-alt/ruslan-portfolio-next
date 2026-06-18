@@ -46,13 +46,7 @@ export default function AiChatWidget() {
     return () => window.removeEventListener('toggle-ai-chat', handler);
   }, []);
 
-  // Auto-greeting after 3 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!open && !greetingDismissed) setShowGreeting(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [open, greetingDismissed]);
+
 
   useEffect(() => {
     if (open) setShowGreeting(false);
@@ -124,22 +118,7 @@ export default function AiChatWidget() {
 
   return (
     <>
-      {/* ── Auto-greeting bubble ── */}
-      {showGreeting && !open && (
-        <div className="fixed bottom-28 right-4 z-50 max-w-[260px]" style={{ animation: 'slideUp 0.4s ease-out' }}>
-          <div className="relative bg-[#1a1a2e]/95 backdrop-blur-xl border border-purple-500/30 rounded-2xl rounded-br-sm px-4 py-3 shadow-[0_0_30px_rgba(139,92,246,0.15)]">
-            <button 
-              onClick={() => { setGreetingDismissed(true); setShowGreeting(false); }}
-              className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-[10px] text-white/50 hover:text-white hover:bg-white/20 transition-all"
-            >✕</button>
-            <p className="text-white/80 text-xs leading-relaxed">{t('agent_greeting')}</p>
-            <button
-              onClick={() => { setGreetingDismissed(true); setShowGreeting(false); setOpen(true); }}
-              className="mt-2 w-full py-1.5 rounded-lg bg-gradient-to-r from-purple-600/40 to-blue-600/40 border border-purple-500/30 text-white/80 text-[11px] font-medium hover:from-purple-600/60 hover:to-blue-600/60 transition-all"
-            >{t('agent_ask_button')}</button>
-          </div>
-        </div>
-      )}
+
 
       {/* Floating button removed — hero avatar is the chat trigger on all pages */}
 

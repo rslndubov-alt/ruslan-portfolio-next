@@ -109,14 +109,24 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
         </span>
       </div>
       
-      {/* Metadata for featured image */}
+      {/* Caption for featured image */}
       {(() => {
         const meta = getMeta(filtered[featuredIdx], lang);
-        if (!meta || (!meta.title && !meta.desc)) return null;
+        // Fallback: extract clean name from URL
+        const fallbackName = (() => {
+          try {
+            const parts = filtered[featuredIdx].split('/');
+            return decodeURIComponent(parts[parts.length - 1])
+              .replace(/\.[^.]+$/, '')
+              .replace(/[-_]/g, ' ');
+          } catch { return ''; }
+        })();
+        const title = meta?.title || fallbackName;
+        const desc = meta?.desc;
         return (
           <div className="mb-4 mt-2 px-1">
-            {meta.title && <h3 className="text-white/90 text-base font-semibold">{meta.title}</h3>}
-            {meta.desc && <p className="text-white/50 text-xs mt-1 leading-relaxed max-w-2xl">{meta.desc}</p>}
+            {title && <h3 className="text-white/80 text-sm font-medium">{title}</h3>}
+            {desc && <p className="text-white/40 text-xs mt-1 leading-relaxed max-w-2xl">{desc}</p>}
           </div>
         );
       })()}
