@@ -141,17 +141,28 @@ export default function Hero() {
       {/* Right Column (Avatar + Resume) */}
       <div className="hero-right-col">
         <div className="hero-avatar" style={{ position: 'relative', cursor: 'pointer' }} onClick={() => window.dispatchEvent(new CustomEvent('toggle-ai-chat'))}>
-          {/* Neon pulsing ring */}
+          {/* Animated neon ring keyframes */}
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes neonSpin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            @keyframes neonPulse {
+              0%, 100% { opacity: 0.5; filter: blur(6px); }
+              50% { opacity: 0.8; filter: blur(8px); }
+            }
+          `}} />
+          {/* Outer glow (blurred, pulsing) */}
           <div style={{
-            position: 'absolute', inset: '-4px', borderRadius: '50%',
-            background: 'linear-gradient(135deg, #8b5cf6, #3b82f6, #06b6d4)',
-            opacity: 0.6, filter: 'blur(4px)',
-            animation: 'pulse 2s ease-in-out infinite',
+            position: 'absolute', inset: '-6px', borderRadius: '50%',
+            background: 'conic-gradient(from 0deg, #8b5cf6, #3b82f6, #06b6d4, #8b5cf6)',
+            animation: 'neonSpin 3s linear infinite, neonPulse 2s ease-in-out infinite',
           }} />
+          {/* Inner sharp ring */}
           <div style={{
-            position: 'absolute', inset: '-2px', borderRadius: '50%',
-            background: 'linear-gradient(135deg, #8b5cf6, #3b82f6, #06b6d4)',
-            opacity: 0.8,
+            position: 'absolute', inset: '-3px', borderRadius: '50%',
+            background: 'conic-gradient(from 0deg, #a78bfa, #60a5fa, #22d3ee, #a78bfa)',
+            animation: 'neonSpin 3s linear infinite',
           }} />
           <div style={{
             position: 'relative',
