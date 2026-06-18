@@ -141,28 +141,7 @@ export default function AiChatWidget() {
         </div>
       )}
 
-      {/* ── Floating Avatar Button with Neon Ring (hidden on homepage — hero avatar is the trigger) ── */}
-      {!isHomePage && (
-        <button
-          onClick={() => setOpen(o => !o)}
-          className="fixed bottom-5 right-5 z-50 group"
-          aria-label="Open AI chat"
-        >
-          <div className="relative">
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 opacity-60 blur-sm animate-pulse group-hover:opacity-90 transition-opacity" />
-            <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 opacity-80 group-hover:opacity-100 transition-opacity" />
-            <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#0a0a0a]">
-              {open ? (
-                <div className="w-full h-full bg-[#1a1a2e] flex items-center justify-center text-white/80 text-xl">✕</div>
-              ) : (
-                <img src={avatarUrl} alt="AI Agent" className="w-full h-full object-cover" />
-              )}
-            </div>
-            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#0a0a0a] animate-pulse" />
-          </div>
-          {!open && <span className="block text-center mt-1 text-[9px] font-medium tracking-wider text-white/50 uppercase">AI Agent</span>}
-        </button>
-      )}
+      {/* Floating button removed — hero avatar is the chat trigger on all pages */}
 
       {/* ── Chat Panel ── */}
       {open && (
