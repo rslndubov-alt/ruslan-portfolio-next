@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useLang } from '@/lib/i18n';
 import Image from 'next/image';
 
@@ -21,6 +21,8 @@ interface ChatAction {
 export default function AiChatWidget() {
   const { t } = useLang();
   const router = useRouter();
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -30,6 +32,13 @@ export default function AiChatWidget() {
   const [pendingActions, setPendingActions] = useState<ChatAction[]>([]);
   const [briefSent, setBriefSent] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Listen for hero avatar click (homepage)
+  useEffect(() => {
+    const handler = () => setOpen(o => !o);
+    window.addEventListener('toggle-ai-chat', handler);
+    return () => window.removeEventListener('toggle-ai-chat', handler);
+  }, []);
 
   // Auto-greeting after 3 seconds
   useEffect(() => {
@@ -126,26 +135,28 @@ export default function AiChatWidget() {
         </div>
       )}
 
-      {/* ── Floating Avatar Button with Neon Ring ── */}
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="fixed bottom-5 right-5 z-50 group"
-        aria-label="Open AI chat"
-      >
-        <div className="relative">
-          <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 opacity-60 blur-sm animate-pulse group-hover:opacity-90 transition-opacity" />
-          <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 opacity-80 group-hover:opacity-100 transition-opacity" />
-          <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#0a0a0a]">
-            {open ? (
-              <div className="w-full h-full bg-[#1a1a2e] flex items-center justify-center text-white/80 text-xl">✕</div>
-            ) : (
-              <Image src="/avatar-chat.jpg" alt="AI Agent" width={56} height={56} className="w-full h-full object-cover" />
-            )}
+      {/* ── Floating Avatar Button with Neon Ring (hidden on homepage — hero avatar is the trigger) ── */}
+      {!isHomePage && (
+        <button
+          onClick={() => setOpen(o => !o)}
+          className="fixed bottom-5 right-5 z-50 group"
+          aria-label="Open AI chat"
+        >
+          <div className="relative">
+            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 opacity-60 blur-sm animate-pulse group-hover:opacity-90 transition-opacity" />
+            <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400 opacity-80 group-hover:opacity-100 transition-opacity" />
+            <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-[#0a0a0a]">
+              {open ? (
+                <div className="w-full h-full bg-[#1a1a2e] flex items-center justify-center text-white/80 text-xl">✕</div>
+              ) : (
+                <Image src="/avatar-chat.jpg" alt="AI Agent" width={56} height={56} className="w-full h-full object-cover" />
+              )}
+            </div>
+            <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#0a0a0a] animate-pulse" />
           </div>
-          <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#0a0a0a] animate-pulse" />
-        </div>
-        {!open && <span className="block text-center mt-1 text-[9px] font-medium tracking-wider text-white/50 uppercase">AI Agent</span>}
-      </button>
+          {!open && <span className="block text-center mt-1 text-[9px] font-medium tracking-wider text-white/50 uppercase">AI Agent</span>}
+        </button>
+      )}
 
       {/* ── Chat Panel ── */}
       {open && (

@@ -140,16 +140,45 @@ export default function Hero() {
 
       {/* Right Column (Avatar + Resume) */}
       <div className="hero-right-col">
-        <div className="hero-avatar">
+        <div className="hero-avatar" style={{ position: 'relative', cursor: 'pointer' }} onClick={() => window.dispatchEvent(new CustomEvent('toggle-ai-chat'))}>
+          {/* Neon pulsing ring */}
           <div style={{
+            position: 'absolute', inset: '-4px', borderRadius: '50%',
+            background: 'linear-gradient(135deg, #8b5cf6, #3b82f6, #06b6d4)',
+            opacity: 0.6, filter: 'blur(4px)',
+            animation: 'pulse 2s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'absolute', inset: '-2px', borderRadius: '50%',
+            background: 'linear-gradient(135deg, #8b5cf6, #3b82f6, #06b6d4)',
+            opacity: 0.8,
+          }} />
+          <div style={{
+            position: 'relative',
             width: '100%',
             height: '100%',
             borderRadius: '50%',
             overflow: 'hidden',
             background: '#1a1a1a',
+            border: '2px solid #0a0a0a',
           }}>
             {avatarUrl && <img src={avatarUrl} alt="Ruslan Dubov" width={155} height={155}
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />}
+          </div>
+          {/* Online dot */}
+          <span style={{
+            position: 'absolute', bottom: '4px', right: '4px',
+            width: '14px', height: '14px', borderRadius: '50%',
+            background: '#4ade80', border: '2px solid #0a0a0a',
+            animation: 'pulse 2s ease-in-out infinite',
+          }} />
+          {/* AI Agent label */}
+          <div style={{
+            textAlign: 'center', marginTop: '6px',
+            fontSize: '0.6rem', fontWeight: 600, letterSpacing: '1.5px',
+            color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase',
+          }}>
+            ✦ AI Agent
           </div>
         </div>
 
