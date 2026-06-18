@@ -33,8 +33,23 @@ export async function POST(req: NextRequest) {
     const result = await chat.sendMessage(lastMessage.text);
     const text = result.response.text();
     return NextResponse.json({ text });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Chat error:', err);
-    return NextResponse.json({ error: 'AI error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'AI error', 
+      detail: err?.message || String(err),
+      hasKey: !!process.env.GEMINI_API_KEY,
+      keyPrefix: process.env.GEMINI_API_KEY?.substring(0, 8) || 'MISSING'
+    }, { status: 500 });
   }
+}
+
+// Diagnostic endpoint
+export async function GET() {
+  return NextResponse.json({ 
+    status: 'ok',
+    hasGeminiKey: !!process.env.GEMINI_API_KEY,
+    keyPrefix: process.env.GEMINI_API_KEY?.substring(0, 8) || 'MISSING',
+    model: 'gemini-2.5-flash'
+  });
 }
