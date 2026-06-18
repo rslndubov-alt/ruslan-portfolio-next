@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useLang } from '@/lib/i18n';
-import Image from 'next/image';
+import { getAvatarUrl } from '@/lib/supabase';
 
 interface Message {
   role: 'user' | 'model';
@@ -32,6 +32,12 @@ export default function AiChatWidget() {
   const [pendingActions, setPendingActions] = useState<ChatAction[]>([]);
   const [briefSent, setBriefSent] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [avatarUrl, setAvatarUrl] = useState('/avatar-chat.jpg');
+
+  // Load same avatar as hero
+  useEffect(() => {
+    getAvatarUrl().then(url => { if (url) setAvatarUrl(url); });
+  }, []);
 
   // Listen for hero avatar click (homepage)
   useEffect(() => {
@@ -149,7 +155,7 @@ export default function AiChatWidget() {
               {open ? (
                 <div className="w-full h-full bg-[#1a1a2e] flex items-center justify-center text-white/80 text-xl">✕</div>
               ) : (
-                <Image src="/avatar-chat.jpg" alt="AI Agent" width={56} height={56} className="w-full h-full object-cover" />
+                <img src={avatarUrl} alt="AI Agent" className="w-full h-full object-cover" />
               )}
             </div>
             <span className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-green-400 border-2 border-[#0a0a0a] animate-pulse" />
@@ -167,7 +173,7 @@ export default function AiChatWidget() {
           {/* Header */}
           <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20">
             <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-purple-500/50 flex-shrink-0">
-              <Image src="/avatar-chat.jpg" alt="" width={32} height={32} className="w-full h-full object-cover" />
+              <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-white/90 text-sm font-medium">{t('agent_title')}</div>
