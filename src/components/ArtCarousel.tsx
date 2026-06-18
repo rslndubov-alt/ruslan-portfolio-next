@@ -32,11 +32,9 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
 
   const total = filtered.length;
 
-  // AI-describe the featured image
-  useEffect(() => {
-    if (!filtered.length) return;
-    const url = filtered[featuredIdx];
-    // Check memory cache first
+  // Fetch AI caption — called only on manual click, not auto-rotate
+  const fetchCaption = useCallback((url: string) => {
+    // Check memory cache
     if (captionCache.current[url]) {
       setAiCaption(captionCache.current[url]);
       return;
@@ -69,6 +67,24 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
       })
       .catch(() => {})
       .finally(() => setCaptionLoading(false));
+  }, []);
+
+  // On auto-rotate: only show cached captions, never call API
+  useEffect(() => {
+    if (!filtered.length) return;
+    const url = filtered[featuredIdx];
+    const memCached = captionCache.current[url];
+    if (memCached) { setAiCaption(memCached); return; }
+    try {
+      const lsCached = localStorage.getItem('ai-cap:' + url);
+      if (lsCached) {
+        const parsed = JSON.parse(lsCached);
+        captionCache.current[url] = parsed;
+        setAiCaption(parsed);
+        return;
+      }
+    } catch {}
+    setAiCaption(null);
   }, [featuredIdx, filtered]);
 
   const setFeatured = useCallback((idx: number) => {
@@ -135,7 +151,7 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
       )}
 
       {/* Featured hero */}
-      <div className="relative w-full mb-3 cursor-pointer" onClick={() => setLbSrc(filtered[featuredIdx])}>
+      <div className="relative w-full mb-3 cursor-pointer" onClick={() => { setLbSrc(filtered[featuredIdx]); fetchCaption(filtered[featuredIdx]); }}>
         <div style={{ width: '100%', maxHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden' }}>
           <img
             src={filtered[featuredIdx]}
@@ -191,7 +207,7 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
                         ? 'border-white/40 scale-[1.02]'
                         : 'border-white/[0.06] hover:border-white/20'
                     }`}
-                    onClick={() => { setFeatured(i); resetAuto(); }}
+                    onClick={() => { setFeatured(i); resetAuto(); fetchCaption(filtered[i]); }}
                   >
                     <img src={url} alt={`Art ${i + 1}`} loading="lazy" className="w-full h-full object-cover"/>
                   </div>
