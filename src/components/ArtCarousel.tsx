@@ -19,6 +19,9 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [lbSrc, setLbSrc] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [aiCaption, setAiCaption] = useState<{title:string;desc:string}|null>(null);
+  const [captionLoading, setCaptionLoading] = useState(false);
+  const captionCache = useRef<Record<string, {title:string;desc:string}>>({});
   const trackRef = useRef<HTMLDivElement>(null);
   const autoRef = useRef<NodeJS.Timeout | null>(null);
   const progressRef = useRef<NodeJS.Timeout | null>(null);
@@ -28,6 +31,45 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
     : images;
 
   const total = filtered.length;
+
+  // AI-describe the featured image
+  useEffect(() => {
+    if (!filtered.length) return;
+    const url = filtered[featuredIdx];
+    // Check memory cache first
+    if (captionCache.current[url]) {
+      setAiCaption(captionCache.current[url]);
+      return;
+    }
+    // Check localStorage cache
+    try {
+      const cached = localStorage.getItem('ai-cap:' + url);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        captionCache.current[url] = parsed;
+        setAiCaption(parsed);
+        return;
+      }
+    } catch {}
+    // Fetch from Gemini
+    setAiCaption(null);
+    setCaptionLoading(true);
+    fetch('/api/describe-art', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrl: url }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.title) {
+          captionCache.current[url] = data;
+          try { localStorage.setItem('ai-cap:' + url, JSON.stringify(data)); } catch {}
+          setAiCaption(data);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setCaptionLoading(false));
+  }, [featuredIdx, filtered]);
 
   const setFeatured = useCallback((idx: number) => {
     setFeaturedIdx(((idx % total) + total) % total);
@@ -109,27 +151,20 @@ export default function ArtCarousel({ images, searchQuery = '' }: Props) {
         </span>
       </div>
       
-      {/* Caption for featured image */}
-      {(() => {
-        const meta = getMeta(filtered[featuredIdx], lang);
-        // Fallback: extract clean name from URL
-        const fallbackName = (() => {
-          try {
-            const parts = filtered[featuredIdx].split('/');
-            return decodeURIComponent(parts[parts.length - 1])
-              .replace(/\.[^.]+$/, '')
-              .replace(/[-_]/g, ' ');
-          } catch { return ''; }
-        })();
-        const title = meta?.title || fallbackName;
-        const desc = meta?.desc;
-        return (
-          <div className="mb-4 mt-2 px-1">
-            {title && <h3 className="text-white/80 text-sm font-medium">{title}</h3>}
-            {desc && <p className="text-white/40 text-xs mt-1 leading-relaxed max-w-2xl">{desc}</p>}
+      {/* AI-generated caption */}
+      <div className="mb-4 mt-2 px-1 min-h-[36px]">
+        {captionLoading ? (
+          <div className="flex items-center gap-2">
+            <span className="inline-block w-3 h-3 rounded-full border-2 border-purple-500/40 border-t-purple-400 animate-spin" />
+            <span className="text-white/25 text-xs">AI describes...</span>
           </div>
-        );
-      })()}
+        ) : aiCaption ? (
+          <>
+            <h3 className="text-white/80 text-sm font-medium">{aiCaption.title}</h3>
+            {aiCaption.desc && <p className="text-white/40 text-xs mt-1 leading-relaxed">{aiCaption.desc}</p>}
+          </>
+        ) : null}
+      </div>
 
       {/* Progress bar */}
       <div className="w-full h-0.5 bg-white/[0.06] rounded-full mb-3 overflow-hidden">
