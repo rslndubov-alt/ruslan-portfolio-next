@@ -15,6 +15,8 @@ If asked about gallery search, explain you can help filter/describe artworks by 
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json() as { messages: { role: 'user' | 'model'; text: string }[] };
@@ -35,26 +37,37 @@ export async function POST(req: NextRequest) {
     });
 
     const lastMessage = messages[messages.length - 1];
-    const result = await chat.sendMessage(lastMessage.text);
-    const text = result.response.text();
-    return NextResponse.json({ text });
+
+    // Retry up to 3 times with backoff for 503/429 errors
+    let lastError: any;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const result = await chat.sendMessage(lastMessage.text);
+        const text = result.response.text();
+        return NextResponse.json({ text });
+      } catch (e: any) {
+        lastError = e;
+        const status = e?.status || 0;
+        if ((status === 503 || status === 429) && attempt < 2) {
+          await delay(2000 * (attempt + 1)); // 2s, 4s
+          continue;
+        }
+        throw e;
+      }
+    }
+
+    throw lastError;
   } catch (err: any) {
     console.error('Chat error:', err);
-    return NextResponse.json({ 
-      error: 'AI error', 
-      detail: err?.message || String(err),
-      hasKey: !!process.env.GEMINI_API_KEY,
-      keyPrefix: process.env.GEMINI_API_KEY?.substring(0, 8) || 'MISSING'
-    }, { status: 500 });
+    // User-friendly error messages
+    const status = err?.status || 0;
+    if (status === 503) {
+      return NextResponse.json({ error: 'AI сервер временно перегружен. Попробуйте через несколько секунд.' }, { status: 503 });
+    }
+    if (status === 429) {
+      return NextResponse.json({ error: 'Слишком много запросов. Подождите минуту.' }, { status: 429 });
+    }
+    return NextResponse.json({ error: 'AI error' }, { status: 500 });
   }
 }
 
-// Diagnostic endpoint
-export async function GET() {
-  return NextResponse.json({ 
-    status: 'ok',
-    hasGeminiKey: !!process.env.GEMINI_API_KEY,
-    keyPrefix: process.env.GEMINI_API_KEY?.substring(0, 8) || 'MISSING',
-    model: 'gemini-2.5-flash'
-  });
-}
