@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/auto-tag",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/job-hunter",
+      "schedule": "0 */6 * * *"
     }
   ]
 }
